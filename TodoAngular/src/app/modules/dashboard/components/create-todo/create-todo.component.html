@@ -1,0 +1,3 @@
+<form (ngSubmit)="AddTodo(f)" [formGroup]="Form" #f="ngForm">
+    <input type="text" placeholder="Add todo in {{Name}} " name="Text" id="Text" formControlName="Text">
+</form>

@@ -1,0 +1,9 @@
+@import "~foundation-sites/scss/foundation";
+@import "settings";
+
+.tabs-title > a:focus, .tabs-title.is-active > a {
+    background: #e6e6e6 !important;
+    color: #1779ba;
+}
+
+@include foundation-everything(false, false);

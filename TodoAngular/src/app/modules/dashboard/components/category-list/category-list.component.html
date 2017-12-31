@@ -1,0 +1,7 @@
+<form (ngSubmit)="AddList(f)" [formGroup]="Form" #f="ngForm">
+    <input type="text" placeholder="Create list" name="Name" id="Name" formControlName="Name">
+</form>
+
+<ul class="vertical menu">
+    <li *ngFor="let list of Fillables.Lists" (click)="SelectCategory(list.Id, list.Name)">{{list.Name}} <span class="float-right">{{list.TodoCount}}</span></li>
+</ul>
