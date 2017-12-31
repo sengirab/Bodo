@@ -1,9 +1,28 @@
+$font-path: "../node_modules/foundation-icon-fonts/foundation-icons";
+@font-face {
+    font-family: "foundation-icons";
+    src: url("#{$font-path}.eot");
+    src: url("#{$font-path}.eot?#iefix") format("embedded-opentype"),
+    url("#{$font-path}.woff") format("woff"),
+    url("#{$font-path}.ttf") format("truetype"),
+    url("#{$font-path}.svg#fontcustom") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@import "~foundation-icon-fonts/foundation-icons.css";
+
 @import "~foundation-sites/scss/foundation";
 @import "settings";
 
 .tabs-title > a:focus, .tabs-title.is-active > a {
     background: #e6e6e6 !important;
     color: #1779ba;
+}
+
+.trash-list {
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 @include foundation-everything(false, false);

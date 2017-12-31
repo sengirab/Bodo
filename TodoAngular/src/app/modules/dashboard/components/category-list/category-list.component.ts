@@ -50,10 +50,33 @@ export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
     /**
      *
      * @param {string} Id
-     * @param Name
+     * @returns {Promise<void>}
      * @constructor
      */
-    SelectCategory(Id: string, Name: string) {
+    async DeleteList(Id: string) {
+        await this.lists.DeleteList(Id);
+
+        if(this.Fillables.Lists.length == 0) {
+            this.SelectCategory('', '', true);
+            return;
+        }
+
+        this.SelectCategory(this.Fillables.Lists[0].Id, this.Fillables.Lists[0].Name);
+    }
+
+    /**
+     *
+     * @param {string} Id
+     * @param Name
+     * @param EmitNull
+     * @constructor
+     */
+    SelectCategory(Id: string, Name: string, EmitNull: boolean = false) {
+        if(EmitNull) {
+            this.CategorySelected.emit(null);
+            return;
+        }
+
         this.CategorySelected.emit({Id, Name})
     }
 }

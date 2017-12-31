@@ -2,10 +2,12 @@
     <div class="medium-2 columns">
         <app-category-list (selected)="SelectList($event)"></app-category-list>
     </div>
-    <div class="medium-7 columns">
-        <app-todo-list [list]="List"></app-todo-list>
-    </div>
-    <div class="medium-3 columns">
-        <app-todo-detail></app-todo-detail>
+    <div [hidden]="List === null">
+        <div class="medium-7 columns">
+            <app-todo-list [list]="List"></app-todo-list>
+        </div>
+        <div class="medium-3 columns">
+            <app-todo-detail></app-todo-detail>
+        </div>
     </div>
 </div>

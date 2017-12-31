@@ -57,6 +57,29 @@ export class TodoService extends EmitableService {
 
     /**
      *
+     * @param {string} Id
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async DeleteTodo(Id: string) {
+        await this.http.delete(`http://localhost:8080/v1/todos/${Id}`).toPromise();
+
+        let Todo: any = {};
+        this.Emitables.Todos = this.Emitables.Todos.filter(t => {
+            if(t.Id == Id) {
+                Todo = t;
+                return false
+            }
+
+            return true
+        });
+
+        this.deleteAndChangePosition(Todo);
+        this.Emit(this.Emitables, 'Todos', 'Completed');
+    }
+
+    /**
+     *
      * @returns {Promise<void>}
      * @constructor
      */
@@ -104,6 +127,19 @@ export class TodoService extends EmitableService {
             this.Emitables.Todos.push(Todo);
 
             TodosService.SortTodoLists(this.Emitables, ['CreatedAt', 'CreatedAt'], 'Todos', 'Completed');
+        }
+    }
+
+    /**
+     *
+     */
+    private deleteAndChangePosition(Todo: any) {
+        if(Todo.Completed) {
+            this.Emitables.Todos = this.Emitables.Todos.filter(t => t.Id != Todo.Id);
+        }
+
+        if(!Todo.Completed) {
+            this.Emitables.Completed = this.Emitables.Completed.filter(t => t.Id != Todo.Id);
         }
     }
 }

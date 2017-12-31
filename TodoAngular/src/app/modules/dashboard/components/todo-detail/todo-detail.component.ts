@@ -77,4 +77,14 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
     async Complete(TaskRequest: {TodoId: string, Completed: boolean}) {
         await this.todo.CompleteTodo(TaskRequest.TodoId, TaskRequest.Completed)
     }
+
+    /**
+     *
+     * @param {string} Id
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async Delete(Id: string) {
+        await this.todo.DeleteTodo(Id);
+    }
 }

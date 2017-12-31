@@ -23,10 +23,10 @@ func DecideDeleteAction(c *gin.Context) {
 		panic(err)
 	}
 
-	if td.DeletedAt.IsZero() {
-		deleteSoft(c, td)
-	} else {
+	if !td.DeletedAt.IsZero() || td.ParentId.Valid {
 		deleteHard(c, td)
+	} else {
+		deleteSoft(c, td)
 	}
 }
 

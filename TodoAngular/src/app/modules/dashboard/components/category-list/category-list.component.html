@@ -3,5 +3,10 @@
 </form>
 
 <ul class="vertical menu">
-    <li *ngFor="let list of Fillables.Lists" (click)="SelectCategory(list.Id, list.Name)">{{list.Name}} <span class="float-right">{{list.TodoCount}}</span></li>
+    <li *ngFor="let list of Fillables.Lists">
+        <span (click)="SelectCategory(list.Id, list.Name)">{{list.Name}}</span>
+
+        <i (click)="DeleteList(list.Id)" class="float-right fi-trash trash-list"></i>
+        <span class="float-right">{{list.TodoCount}}</span>
+    </li>
 </ul>

@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
      *
      * @constructor
      */
-    SelectList(List: {Id: string, Name: string}) {
+    SelectList(List: {Id: string, Name: string} | null) {
         this.List = List
     }
 }

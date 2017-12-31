@@ -20,6 +20,7 @@ func Run() {
 		// Lists
 		client.GET("/lists/:Id", lists.Get)
 		client.POST("/lists", lists.Add)
+		client.DELETE("/lists/:Id", lists.Delete)
 
 
 		// Todos

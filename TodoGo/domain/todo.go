@@ -5,7 +5,6 @@ import (
 	"github.com/satori/go.uuid"
 	"github.com/go-pg/pg/orm"
 	"github.com/go-pg/pg"
-	"fmt"
 )
 
 type TodoCountResult []struct {
@@ -48,8 +47,6 @@ func (t *Todo) BeforeInsert(db orm.DB) error {
 	if t.UpdatedAt.IsZero() {
 		t.UpdatedAt = time.Now()
 	}
-
-	fmt.Println(t.ParentId)
 
 	return nil
 }

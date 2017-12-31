@@ -40,4 +40,17 @@ export class ListsService extends EmitableService {
 
         await this.GetLists('3fcadfa1-0716-4a75-9e61-be38b89f80ba');
     }
+
+    /**
+     *
+     * @param {string} Id
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async DeleteList(Id: string) {
+        await this.http.delete(`http://localhost:8080/v1/lists/${Id}`).toPromise();
+
+        this.Emitables.Lists = this.Emitables.Lists.filter((l) => l.Id !== Id);
+        this.Emit(this.Emitables, 'Lists')
+    }
 }

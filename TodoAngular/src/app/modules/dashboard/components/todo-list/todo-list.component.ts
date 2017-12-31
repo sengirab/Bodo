@@ -43,6 +43,7 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
             this.List = changes['List'].currentValue;
 
             await this.todos.GetTodos(changes['List'].currentValue['Id']);
+            this.Dom.ActiveTab = 'todos';
         }
     }
 
