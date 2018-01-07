@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {EmitableService} from '../../../shared/utils/classes/emitable-service.class';
 import {NgForm} from '@angular/forms';
+import {API_CLIENT} from '../../../utils/api';
+import {PrepareHeaders} from '../../../utils/prepare-headers';
+import {AuthenticationService} from '../../authentication/services/authentication.service';
 
 export interface ListEmitables {
     Lists: any[]
@@ -14,18 +17,17 @@ export class ListsService extends EmitableService {
         Lists: []
     };
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private authentication: AuthenticationService) {
         super();
     }
 
     /**
      *
-     * @param {string} UserId
      * @returns {Observable<Object>}
      * @constructor
      */
-    async GetLists(UserId: string) {
-        this.Emitables.Lists = (<any[]>await this.http.get(`http://localhost:8080/v1/lists/${UserId}`).toPromise());
+    async GetLists() {
+        this.Emitables.Lists = (<any[]>await this.http.get(`${API_CLIENT}lists`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
         this.Emit(this.Emitables, 'Lists')
     }
 
@@ -36,9 +38,9 @@ export class ListsService extends EmitableService {
      * @param List
      */
     async AddList(List: NgForm) {
-        await this.http.post(`http://localhost:8080/v1/lists`, List.value).toPromise();
+        await this.http.post(`${API_CLIENT}lists`, List.value, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
 
-        await this.GetLists('3fcadfa1-0716-4a75-9e61-be38b89f80ba');
+        await this.GetLists();
     }
 
     /**
@@ -48,7 +50,7 @@ export class ListsService extends EmitableService {
      * @constructor
      */
     async DeleteList(Id: string) {
-        await this.http.delete(`http://localhost:8080/v1/lists/${Id}`).toPromise();
+        await this.http.delete(`${API_CLIENT}lists/${Id}`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
 
         this.Emitables.Lists = this.Emitables.Lists.filter((l) => l.Id !== Id);
         this.Emit(this.Emitables, 'Lists')

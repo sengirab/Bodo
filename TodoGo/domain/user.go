@@ -11,3 +11,8 @@ type User struct {
 
 	Lists     []*List `json:"-"`
 }
+
+type Credentials struct {
+	Username string
+	Password string
+}

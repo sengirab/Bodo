@@ -5,9 +5,11 @@ import (
 	"todos/TodoGo/database"
 	"github.com/go-pg/pg"
 	"log"
+	"todos/TodoGo/server/handlers/authentication"
 )
 
 func init() {
+	authentication.InitKeys()
 	pg.SetLogger(&log.Logger{})
 
 	err := database.Migrate()

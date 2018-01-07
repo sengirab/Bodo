@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {ListEmitables, ListsService} from '../../services/lists.service';
 import {SubscriberComponent} from '../../../../shared/abstract/subsciber-component.abstract';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import {AuthenticationService} from '../../../authentication/services/authentication.service';
 
 @Component({
     selector: 'app-category-list',
@@ -13,7 +14,7 @@ export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
 
     Form: FormGroup;
 
-    constructor(private lists: ListsService, private form: FormBuilder) {
+    constructor(private lists: ListsService, private form: FormBuilder, private authentication: AuthenticationService) {
         super(lists);
     }
 
@@ -25,10 +26,10 @@ export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
 
         this.Form = this.form.group({
             Name: ['', Validators.required],
-            UserId: '3fcadfa1-0716-4a75-9e61-be38b89f80ba',
+            UserId: this.authentication.User.Id,
         });
 
-        await this.lists.GetLists('3fcadfa1-0716-4a75-9e61-be38b89f80ba');
+        await this.lists.GetLists();
 
         if(this.Fillables.Lists.length > 0) {
            this.SelectCategory(this.Fillables.Lists[0].Id, this.Fillables.Lists[0].Name)

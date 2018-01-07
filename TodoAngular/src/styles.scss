@@ -25,4 +25,22 @@ $font-path: "../node_modules/foundation-icon-fonts/foundation-icons";
     cursor: pointer;
 }
 
+.form-centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.log-in-form {
+    border: 1px solid $medium-gray;
+    padding: $form-spacing;
+    border-radius: $global-radius;
+}
+
+.top-bar-padding {
+    padding: 10px 0;
+}
+
 @include foundation-everything(false, false);

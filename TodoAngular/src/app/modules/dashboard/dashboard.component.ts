@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from '../authentication/services/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -8,7 +10,7 @@ export class DashboardComponent implements OnInit {
 
     List: {Id: string, Name: string} = null;
 
-    constructor() {
+    constructor(private authentication: AuthenticationService, private router: Router) {
     }
 
     ngOnInit() {
@@ -20,5 +22,14 @@ export class DashboardComponent implements OnInit {
      */
     SelectList(List: {Id: string, Name: string} | null) {
         this.List = List
+    }
+
+    /**
+     *
+     * @constructor
+     */
+    Logout() {
+        this.authentication.Token = "";
+        this.router.navigate(['authentication/login'])
     }
 }

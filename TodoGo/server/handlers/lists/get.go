@@ -6,20 +6,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"todos/TodoGo/database"
 	"todos/TodoGo/domain"
-	"github.com/satori/go.uuid"
+	"todos/TodoGo/server/handlers/authentication"
 )
 
 func Get(c *gin.Context) {
 	db := database.DB
 
-	uid, err := uuid.FromString(c.Params.ByName("Id"))
-	if err != nil {
-		c.Writer.WriteHeader(http.StatusBadRequest)
-	}
+	ctx := authentication.GetContext(c)
 
 	var lts []domain.List
 
-	err = db.Model(&lts).Where("user_id = ?", uid).Column("list.*").Select()
+	err := db.Model(&lts).Where("user_id = ?", ctx.Id).Column("list.*").Select()
 	CountListTodos(lts)
 
 	if err != nil {

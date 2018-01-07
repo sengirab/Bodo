@@ -5,6 +5,7 @@ import (
 	"todos/TodoGo/server/middlewares"
 	"todos/TodoGo/server/handlers/lists"
 	"todos/TodoGo/server/handlers/todos"
+	"todos/TodoGo/server/handlers/authentication"
 )
 
 func Run() {
@@ -12,13 +13,19 @@ func Run() {
 	router.Use(middlewares.Cors)
 
 
-	//.Use(stack.ValidateTokenMiddleware)
-	client := router.Group("/v1")
+	auth := router.Group("/authentication")
+	{
+		// Authentication
+		auth.POST("/login", authentication.Login)
+	}
+
+	client := router.Group("/client").Use(middlewares.ValidateTokenMiddleware)
 	{
 		// Users
+		client.GET("/user/validate", authentication.Validate)
 
 		// Lists
-		client.GET("/lists/:Id", lists.Get)
+		client.GET("/lists", lists.Get)
 		client.POST("/lists", lists.Add)
 		client.DELETE("/lists/:Id", lists.Delete)
 

@@ -1,0 +1,15 @@
+<div class="medium-3 columns form-centered">
+    <form (ngSubmit)="Login(f)" [formGroup]="Form" #f="ngForm" class="log-in-form">
+        <h4 class="text-center">Bodo</h4>
+
+        <label>Email
+            <input type="text" name="Email" id="Email" formControlName="Username">
+        </label>
+        <label>Password
+            <input type="password" name="Password" id="Password" formControlName="Password">
+        </label>
+        <input id="show-password" type="checkbox"><label for="show-password">Show password</label>
+        <p><input type="submit" class="button expanded" value="Log in"/></p>
+        <p class="text-center"><a href="#">Forgot your password?</a></p>
+    </form>
+</div>

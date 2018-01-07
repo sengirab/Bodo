@@ -4,6 +4,9 @@ import {NgForm} from '@angular/forms';
 
 import {EmitableService} from '../../../shared/utils/classes/emitable-service.class';
 import {ListsService} from './lists.service';
+import {API_CLIENT} from '../../../utils/api';
+import {PrepareHeaders} from '../../../utils/prepare-headers';
+import {AuthenticationService} from '../../authentication/services/authentication.service';
 
 export interface TodosEmitables {
     Todos: any[];
@@ -20,7 +23,7 @@ export class TodosService extends EmitableService {
         Completed: []
     };
 
-    constructor(private http: HttpClient, private lists: ListsService) {
+    constructor(private http: HttpClient, private lists: ListsService, private authentication: AuthenticationService) {
         super();
     }
 
@@ -35,7 +38,7 @@ export class TodosService extends EmitableService {
      * @constructor
      */
     async GetTodos(ListId: string) {
-        const Todos = (<any[]>await this.http.get(`http://localhost:8080/v1/todos/${ListId}`).toPromise());
+        const Todos = (<any[]>await this.http.get(`${API_CLIENT}todos/${ListId}`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
 
         if(Todos === null) {
             this.Emitables = TodosService.FillTodoLists([]);
@@ -52,7 +55,7 @@ export class TodosService extends EmitableService {
      * @constructor
      */
     async AddTodo(Todo: NgForm) {
-        const CreatedTodo = (<any>await this.http.post('http://localhost:8080/v1/todos', Todo.value).toPromise());
+        const CreatedTodo = (<any>await this.http.post(`${API_CLIENT}todos`, Todo.value, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
         this.Emitables.Todos.unshift(CreatedTodo);
 
         this.Emit(this.Emitables, 'Todos');
@@ -67,7 +70,7 @@ export class TodosService extends EmitableService {
      * @constructor
      */
     async CompleteTodo(TodoId: string, Completed: boolean) {
-        const Todo = (<any>await this.http.post('http://localhost:8080/v1/todos/complete', {TodoId, Completed}).toPromise());
+        const Todo = (<any>await this.http.post(`${API_CLIENT}todos/complete`, {TodoId, Completed}, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
 
         this.completeAndChangePosition(Todo);
         this.Emit(this.Emitables, 'Todos', 'Completed');
@@ -80,7 +83,7 @@ export class TodosService extends EmitableService {
      * @constructor
      */
     async DeleteTodo(Id: string) {
-        const Todo = (<any>await this.http.delete(`http://localhost:8080/v1/todos/${Id}`).toPromise());
+        const Todo = (<any>await this.http.delete(`${API_CLIENT}todos/${Id}`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
 
         this.deleteAndChangePosition(Todo, Id);
 
