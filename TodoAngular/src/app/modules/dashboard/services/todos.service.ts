@@ -155,7 +155,7 @@ export class TodosService extends EmitableService {
 
             this.Emitables.Todos.push(Todo);
 
-            TodosService.SortTodoLists(this.Emitables, ['CreatedAt', 'CreatedAt'], 'Todos', 'Completed');
+            TodosService.SortTodoLists(this.Emitables, ['CreatedAt', 'CompletedAt'], 'Todos', 'Completed');
             this.UpdateListCount(Todo.ListId, '+');
         }
     }

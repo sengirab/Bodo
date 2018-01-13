@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"golang.org/x/crypto/bcrypt"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"time"
 	"todos/TodoGo/database"
 	"todos/TodoGo/domain"
 	"github.com/gin-gonic/gin"
@@ -31,7 +29,6 @@ func Login(c *gin.Context) {
 
 	err = db.Model(&user).Where("username = ?", credentials.Username).First()
 
-	fmt.Println(err)
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusForbidden)
 		fmt.Fprint(c.Writer, "Invalid credentials")
@@ -68,19 +65,4 @@ func Login(c *gin.Context) {
 	c.Writer.Header().Add("Content-Type", "application/json")
 	c.Writer.WriteHeader(http.StatusOK)
 	c.Writer.Write(jsn)
-}
-
-func CreateTokenAndClaim(user *domain.User) *jwt.Token {
-	token := jwt.New(jwt.SigningMethodRS256)
-	claims := make(jwt.MapClaims)
-
-	claims["exp"] = time.Now().Add(time.Hour * time.Duration(24)).Unix()
-	claims["iat"] = time.Now().Unix()
-
-	// User context.
-	claims["usrId"] = user.Id
-
-	token.Claims = claims
-
-	return token
 }

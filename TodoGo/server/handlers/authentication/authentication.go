@@ -7,6 +7,8 @@ import (
 	"github.com/satori/go.uuid"
 	"github.com/gin-gonic/gin"
 	"todos/TodoGo/utils"
+	"time"
+	"todos/TodoGo/domain"
 )
 
 type TokenResponse struct {
@@ -46,4 +48,19 @@ func InitKeys() {
 
 	VerifyKey, err = jwt.ParseRSAPublicKeyFromPEM(verifyBytes)
 	utils.Fatal(err)
+}
+
+func CreateTokenAndClaim(user *domain.User) *jwt.Token {
+	token := jwt.New(jwt.SigningMethodRS256)
+	claims := make(jwt.MapClaims)
+
+	claims["exp"] = time.Now().Add(time.Hour * time.Duration(24)).Unix()
+	claims["iat"] = time.Now().Unix()
+
+	// User context.
+	claims["usrId"] = user.Id
+
+	token.Claims = claims
+
+	return token
 }

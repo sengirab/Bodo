@@ -1,10 +1,10 @@
 <div class="callout secondary clearfix" *ngIf="Todo !== null">
+
+    <div class="todo-checkbox-holder">
+        <input type="checkbox" [id]="'check-' + Todo.Id" class="todo-checkbox" [checked]="Todo.Completed" (click)="Complete()"/>
+        <label [for]="'check-' + Todo.Id"></label>
+    </div>
+
     <h5 (click)="Clicked()" class="float-left">{{Todo.Text}}</h5>
-
-    <button *ngIf="Todo.DeletedAt == null" class="button float-right success" (click)="Complete()">
-        <span *ngIf="Todo.Completed">Put back</span>
-        <span *ngIf="!Todo.Completed">Complete</span>
-    </button>
-
-    <button class="button float-right alert" (click)="Delete()">Delete</button>
+    <i (click)="Delete()" class="float-right fi-trash trash-list"></i>
 </div>

@@ -17,6 +17,7 @@ func Run() {
 	{
 		// Authentication
 		auth.POST("/login", authentication.Login)
+		auth.POST("/register", authentication.Register)
 	}
 
 	client := router.Group("/client").Use(middlewares.ValidateTokenMiddleware)

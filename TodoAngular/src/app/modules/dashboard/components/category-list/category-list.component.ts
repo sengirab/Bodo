@@ -3,6 +3,9 @@ import {ListEmitables, ListsService} from '../../services/lists.service';
 import {SubscriberComponent} from '../../../../shared/abstract/subsciber-component.abstract';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../../authentication/services/authentication.service';
+import {ListModalComponent} from '../../../../components/modals/components/list-modal/list-modal.component';
+import {PlatformModal} from '../../../../components/modals/modal';
+import {ModalsService} from '../../../../components/modals/service/modals.service';
 
 @Component({
     selector: 'app-category-list',
@@ -10,11 +13,12 @@ import {AuthenticationService} from '../../../authentication/services/authentica
 })
 export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
 
-    @Output('selected') CategorySelected: EventEmitter<{Id: string, Name: string}> = new EventEmitter<{Id: string, Name: string}>();
+    @Output('selected') CategorySelected: EventEmitter<{ Id: string, Name: string }> = new EventEmitter<{ Id: string, Name: string }>();
 
     Form: FormGroup;
 
-    constructor(private lists: ListsService, private form: FormBuilder, private authentication: AuthenticationService) {
+    constructor(private lists: ListsService, private form: FormBuilder, private authentication: AuthenticationService,
+                private modals: ModalsService) {
         super(lists);
     }
 
@@ -31,8 +35,8 @@ export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
 
         await this.lists.GetLists();
 
-        if(this.Fillables.Lists.length > 0) {
-           this.SelectCategory(this.Fillables.Lists[0].Id, this.Fillables.Lists[0].Name)
+        if (this.Fillables.Lists.length > 0) {
+            this.SelectCategory(this.Fillables.Lists[0].Id, this.Fillables.Lists[0].Name);
         }
     }
 
@@ -57,12 +61,26 @@ export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
     async DeleteList(Id: string) {
         await this.lists.DeleteList(Id);
 
-        if(this.Fillables.Lists.length == 0) {
+        if (this.Fillables.Lists.length == 0) {
             this.SelectCategory('', '', true);
             return;
         }
 
         this.SelectCategory(this.Fillables.Lists[0].Id, this.Fillables.Lists[0].Name);
+    }
+
+    /**
+     *
+     * @constructor
+     */
+    EditList() {
+        this.modals.AddModal(
+            new PlatformModal({
+                component: ListModalComponent,
+                title: 'Edit list',
+                inputs: {}
+            })
+        );
     }
 
     /**
@@ -73,11 +91,11 @@ export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
      * @constructor
      */
     SelectCategory(Id: string, Name: string, EmitNull: boolean = false) {
-        if(EmitNull) {
+        if (EmitNull) {
             this.CategorySelected.emit(null);
             return;
         }
 
-        this.CategorySelected.emit({Id, Name})
+        this.CategorySelected.emit({Id, Name});
     }
 }

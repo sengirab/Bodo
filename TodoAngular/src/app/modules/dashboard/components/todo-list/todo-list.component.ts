@@ -1,17 +1,43 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, HostBinding, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 import {SubscriberComponent} from '../../../../shared/abstract/subsciber-component.abstract';
 import {TodosEmitables, TodosService} from '../../services/todos.service';
 import {TodoService} from '../todo-detail/services/todo.service';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 
 @Component({
     selector: 'app-todo-list',
     templateUrl: './todo-list.component.html',
+    animations: [
+        trigger('easeInOut', [
+            transition(':enter', [
+                style({
+                    height: 1,
+                    width: '100%',
+                    overflow: 'hidden'
+                }),
+                animate('.2s ease', style({
+                    height: '*'
+                }))
+            ]),
+            transition(':leave', [
+                style({
+                    overflow: 'hidden',
+                    height: '*',
+                    width: '100%'
+                }),
+                animate('.2s ease', style({
+                    height: 0
+                }))
+            ])
+        ])
+    ],
 })
 export class TodoListComponent extends SubscriberComponent<TodosEmitables> implements OnChanges {
 
-    @Input('list') List: {Id: string, Name: string} = null;
+    @Input('list') List: { Id: string, Name: string } = null;
+    @HostBinding('@.disabled') DisabledAnimations = true;
 
     Dom = {
         ActiveTab: <string>'todos',
@@ -28,8 +54,8 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
     async ngOnInit() {
         super.ngOnInit();
 
-        if(this.List !== null) {
-            await this.todos.GetTodos(this.List.Id);
+        if (this.List !== null) {
+            await this.GetTodos(this.List.Id);
         }
     }
 
@@ -39,20 +65,28 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
      * @returns {Promise<void>}
      */
     async ngOnChanges(changes: SimpleChanges) {
-        if((changes['List'] && changes['List'].currentValue) && changes['List'].currentValue !== null) {
+        if ((changes['List'] && changes['List'].currentValue) && changes['List'].currentValue !== null) {
             this.List = changes['List'].currentValue;
 
-            await this.todos.GetTodos(changes['List'].currentValue['Id']);
+            await this.GetTodos(changes['List'].currentValue['Id']);
             this.Dom.ActiveTab = 'todos';
         }
     }
 
     /**
      *
+     * @param {string} ListId
+     * @returns {Promise<void>}
      * @constructor
      */
-    SetTodo(Todo: any) {
-        this.todo.SetTodo(Todo)
+    async GetTodos(ListId: string) {
+        this.DisabledAnimations = true;
+        await this.todos.GetTodos(ListId);
+
+        // Too fast without set timeout, resulting in to animations that we don't want here.
+        setTimeout(() => {
+            this.DisabledAnimations = false;
+        }, 0);
     }
 
     /**
@@ -70,8 +104,16 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
      * @returns {Promise<void>}
      * @constructor
      */
-    async Complete(TaskRequest: {TodoId: string, Completed: boolean}) {
-        await this.todos.CompleteTodo(TaskRequest.TodoId, TaskRequest.Completed)
+    async Complete(TaskRequest: { TodoId: string, Completed: boolean }) {
+        await this.todos.CompleteTodo(TaskRequest.TodoId, TaskRequest.Completed);
+    }
+
+    /**
+     *
+     * @constructor
+     */
+    SetTodo(Todo: any) {
+        this.todo.SetTodo(Todo);
     }
 
     /**
@@ -80,7 +122,7 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
      * @constructor
      */
     ChangeTab(Tab: string) {
-        this.Dom.ActiveTab = Tab
+        this.Dom.ActiveTab = Tab;
     }
 
     /**
@@ -88,6 +130,6 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
      * @constructor
      */
     ShowCompleted() {
-        this.Dom.ShowCompleted =! this.Dom.ShowCompleted
+        this.Dom.ShowCompleted = !this.Dom.ShowCompleted;
     }
 }

@@ -27,7 +27,7 @@ export class TodoItemComponent implements OnInit {
      * @constructor
      */
     Clicked() {
-        this.ClickedEmitter.emit(this.Todo)
+        this.ClickedEmitter.emit(this.Todo);
     }
 
     /**
@@ -35,7 +35,7 @@ export class TodoItemComponent implements OnInit {
      * @constructor
      */
     Delete() {
-        this.DeleteEmitter.emit(this.Todo.Id)
+        this.DeleteEmitter.emit(this.Todo.Id);
     }
 
     /**
@@ -43,12 +43,12 @@ export class TodoItemComponent implements OnInit {
      * @constructor
      */
     Complete() {
-        if(this.Todo.Completed) {
-            this.CompleteEmitter.emit({TodoId: this.Todo.Id, Completed: false})
+        if (this.Todo.Completed) {
+            this.CompleteEmitter.emit({TodoId: this.Todo.Id, Completed: false});
         }
 
-        if(!this.Todo.Completed) {
-            this.CompleteEmitter.emit({TodoId: this.Todo.Id, Completed: true})
+        if (!this.Todo.Completed) {
+            this.CompleteEmitter.emit({TodoId: this.Todo.Id, Completed: true});
         }
     }
 }

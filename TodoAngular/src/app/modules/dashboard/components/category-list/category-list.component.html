@@ -6,7 +6,7 @@
     <li *ngFor="let list of Fillables.Lists">
         <span (click)="SelectCategory(list.Id, list.Name)">{{list.Name}}</span>
 
-        <i (click)="DeleteList(list.Id)" class="float-right fi-trash trash-list"></i>
+        <i (click)="EditList()" class="float-right fi-widget trash-list"></i>
         <span class="float-right">{{list.TodoCount}}</span>
     </li>
 </ul>

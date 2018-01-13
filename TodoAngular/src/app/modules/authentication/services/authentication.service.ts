@@ -39,8 +39,10 @@ export class AuthenticationService {
      * @returns {Promise<void>}
      * @constructor
      */
-    async Register() {
+    async Register(f: NgForm) {
+        let res = (<any>await this.http.post(`${API_AUTH}register`, f.value).toPromise());
 
+        this.Token = res.Token;
     }
 
     /**

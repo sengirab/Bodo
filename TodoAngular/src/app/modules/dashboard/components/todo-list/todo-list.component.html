@@ -1,23 +1,29 @@
 <app-create-todo [list]="List"></app-create-todo>
 
 <ul class="tabs">
-    <li [ngClass]="{'is-active': Dom.ActiveTab === 'todos'}" class="tabs-title"><a (click)="ChangeTab('todos')">Todos</a></li>
-    <li [ngClass]="{'is-active': Dom.ActiveTab === 'deleted'}" class="tabs-title"><a (click)="ChangeTab('deleted')">Deleted ({{Fillables.Deleted.length}})</a></li>
+    <li [ngClass]="{'is-active': Dom.ActiveTab === 'todos'}" class="tabs-title"><a
+        (click)="ChangeTab('todos')">Todos</a></li>
+    <li [ngClass]="{'is-active': Dom.ActiveTab === 'deleted'}" class="tabs-title"><a (click)="ChangeTab('deleted')">Deleted
+        ({{Fillables.Deleted.length}})</a></li>
 </ul>
 
 <div class="tabs-content">
     <div class="tabs-panel" [ngClass]="{'is-active': Dom.ActiveTab === 'todos'}">
-        <app-todo-item *ngFor="let todo of Fillables.Todos" (clicked)="SetTodo($event)" (completed)="Complete($event)" (deleted)="Delete($event)" [todo]="todo"></app-todo-item>
+        <app-todo-item *ngFor="let todo of Fillables.Todos" (clicked)="SetTodo($event)" (completed)="Complete($event)"
+                       (deleted)="Delete($event)" [todo]="todo" @easeInOut></app-todo-item>
 
 
         <span (click)="ShowCompleted()">Completed Todos ({{Fillables.Completed.length}})</span>
         <div *ngIf="Dom.ShowCompleted">
-            <app-todo-item *ngFor="let todo of Fillables.Completed" (clicked)="SetTodo($event)" (completed)="Complete($event)" (deleted)="Delete($event)" [todo]="todo"></app-todo-item>
+            <app-todo-item *ngFor="let completed of Fillables.Completed" (clicked)="SetTodo($event)"
+                           (completed)="Complete($event)" (deleted)="Delete($event)" [todo]="completed"
+                           @easeInOut></app-todo-item>
         </div>
     </div>
 
     <div class="tabs-panel" [ngClass]="{'is-active': Dom.ActiveTab === 'deleted'}">
-        <app-todo-item *ngFor="let todo of Fillables.Deleted" (completed)="Complete($event)" (deleted)="Delete($event)" [todo]="todo"></app-todo-item>
+        <app-todo-item *ngFor="let deleted of Fillables.Deleted" (completed)="Complete($event)"
+                       (deleted)="Delete($event)" [todo]="deleted" @easeInOut></app-todo-item>
     </div>
 </div>
 

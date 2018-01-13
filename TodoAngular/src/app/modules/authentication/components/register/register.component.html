@@ -1,3 +1,41 @@
-<p>
-  register works!
-</p>
+<div class="row">
+    <div class="medium-4 columns form-centered">
+        <form (ngSubmit)="Register(f)" [formGroup]="Form" #f="ngForm" class="log-in-form">
+            <h4 class="text-center">Bodo</h4>
+
+            <div class="row">
+                <div class="medium-6 columns">
+                    <label>First name
+                        <input type="text" name="FirstName" id="FirstName" formControlName="FirstName">
+                    </label>
+                </div>
+                <div class="medium-6 columns">
+                    <label>Last name
+                        <input type="text" name="LastName" id="LastName" formControlName="LastName">
+                    </label>
+                </div>
+
+                <div class="medium-9 columns">
+                    <label>Street
+                        <input type="text" name="Street" id="Street" formControlName="Street">
+                    </label>
+                </div>
+                <div class="medium-3 columns">
+                    <label>Postal
+                        <input type="text" name="Postal" id="Postal" formControlName="Postal">
+                    </label>
+                </div>
+            </div>
+
+            <label>Email
+                <input type="text" name="Email" id="Email" formControlName="Username">
+            </label>
+            <label>Password
+                <input type="password" name="Password" id="Password" formControlName="Password">
+            </label>
+
+            <p><input type="submit" class="button expanded" value="Sign up"/></p>
+            <p class="text-center"><a [routerLink]="['/authentication/login']">Already a member?</a></p>
+        </form>
+    </div>
+</div>
