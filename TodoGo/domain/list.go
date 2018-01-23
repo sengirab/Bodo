@@ -4,9 +4,10 @@ import "github.com/satori/go.uuid"
 
 type List struct {
 	Model
-	Name      string
+	Name string
 
-	TodoCount int       `sql:"-"`
-	Todos     []*Todo   `json:"-"`
-	UserId    uuid.UUID `sql:",type:uuid"`
+	TodoCount int         `sql:"-"`
+	Todos     []*Todo     `json:"-"`
+	Users     []uuid.UUID `pg:",array"`
+	UserId    uuid.UUID   `sql:",type:uuid"`
 }

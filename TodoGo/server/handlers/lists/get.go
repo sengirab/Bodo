@@ -7,6 +7,9 @@ import (
 	"todos/TodoGo/database"
 	"todos/TodoGo/domain"
 	"todos/TodoGo/server/handlers/authentication"
+	"github.com/satori/go.uuid"
+	"github.com/go-pg/pg"
+	"todos/TodoGo/utils"
 )
 
 func Get(c *gin.Context) {
@@ -24,6 +27,55 @@ func Get(c *gin.Context) {
 	}
 
 	jsn, _ := json.Marshal(lts)
+
+	c.Writer.Header().Add("Content-Type", "application/json")
+	c.Writer.WriteHeader(http.StatusOK)
+	c.Writer.Write(jsn)
+}
+
+func GetSharedLists(c *gin.Context) {
+	db := database.DB
+
+	ctx := authentication.GetContext(c)
+
+	var lts []domain.List
+	_, err := db.Query(&lts, `SELECT * FROM lists WHERE (?) = ANY (users)`, ctx.Id)
+	CountListTodos(lts)
+
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+	}
+
+	jsn, _ := json.Marshal(lts)
+
+	c.Writer.Header().Add("Content-Type", "application/json")
+	c.Writer.WriteHeader(http.StatusOK)
+	c.Writer.Write(jsn)
+}
+
+func GetListUsers(c *gin.Context) {
+	db := database.DB
+
+	listId, err := uuid.FromString(c.Params.ByName("Id"))
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+	}
+
+	var list domain.List
+	err = db.Model(&list).Where("id = ?", listId).Column("list.*").First()
+
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+	}
+
+	var users []domain.User
+	_, err = db.Query(&users, `SELECT * FROM users WHERE id IN (?)`, pg.Strings(utils.UuidSliceToStringSlice(list.Users)))
+
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+	}
+
+	jsn, _ := json.Marshal(users)
 
 	c.Writer.Header().Add("Content-Type", "application/json")
 	c.Writer.WriteHeader(http.StatusOK)

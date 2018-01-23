@@ -16,7 +16,8 @@ type TokenResponse struct {
 }
 
 type UserContext struct {
-	Id   uuid.UUID
+	Id    uuid.UUID
+	Email string
 }
 
 func GetContext(c *gin.Context) *UserContext {
@@ -59,6 +60,7 @@ func CreateTokenAndClaim(user *domain.User) *jwt.Token {
 
 	// User context.
 	claims["usrId"] = user.Id
+	claims["usrEmail"] = user.Username
 
 	token.Claims = claims
 

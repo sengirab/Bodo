@@ -23,6 +23,7 @@ func ValidateTokenMiddleware(c *gin.Context) {
 
 			ctx := authentication.UserContext{
 				Id: utils.UuidFromString(claims["usrId"].(string)),
+				Email: claims["usrEmail"].(string),
 			}
 
 			c.Set("usr", &ctx)

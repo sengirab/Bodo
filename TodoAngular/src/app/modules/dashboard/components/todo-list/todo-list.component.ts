@@ -13,21 +13,23 @@ import {animate, style, transition, trigger} from '@angular/animations';
         trigger('easeInOut', [
             transition(':enter', [
                 style({
-                    height: 1,
+                    height: 0,
                     width: '100%',
                     overflow: 'hidden'
                 }),
-                animate('.2s ease', style({
-                    height: '*'
+                animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
+                    overflow: 'hidden',
+                    height: 45
                 }))
             ]),
             transition(':leave', [
                 style({
                     overflow: 'hidden',
-                    height: '*',
+                    height: 45,
                     width: '100%'
                 }),
-                animate('.2s ease', style({
+                animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
+                    overflow: 'hidden',
                     height: 0
                 }))
             ])

@@ -1,5 +1,8 @@
 <div class="padding-1">
     <div class="medium-12 columns">
+        <div class="float-left top-bar-padding">
+            {{User.FirstName | capitalize}}
+        </div>
         <div class="float-right top-bar-padding" (click)="Logout()">
             Logout
         </div>

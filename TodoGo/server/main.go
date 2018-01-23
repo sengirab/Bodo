@@ -27,7 +27,14 @@ func Run() {
 
 		// Lists
 		client.GET("/lists", lists.Get)
+		client.GET("/lists/shared", lists.GetSharedLists)
+		client.GET("/lists/users/:Id", lists.GetListUsers)
+
 		client.POST("/lists", lists.Add)
+		client.POST("/lists/invite", lists.InviteMembers)
+		client.POST("/lists/accept", lists.AcceptInvitation)
+
+
 		client.DELETE("/lists/:Id", lists.Delete)
 
 

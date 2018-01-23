@@ -14,6 +14,7 @@ func Migrate() error {
 		&domain.User{},
 		&domain.List{},
 		&domain.Todo{},
+		&domain.Invitation{},
 	} {
 		err := db.CreateTable(model, &orm.CreateTableOptions{
 			Temp:        false,

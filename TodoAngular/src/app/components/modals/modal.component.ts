@@ -13,7 +13,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
                 style({
                     transform: 'translateY(-100%)',
                 }),
-                animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
+                animate('600ms cubic-bezier(0.19, 1, 0.22, 1)', style({
                     transform: 'translateY(0)'
                 }))
             ]),
@@ -21,7 +21,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
                 style({
                     transform: 'translateY(0)',
                 }),
-                animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
+                animate('600ms cubic-bezier(0.19, 1, 0.22, 1)', style({
                     transform: 'translateY(-100%)'
                 }))
             ])
@@ -31,7 +31,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
                 style({
                     opacity: '0',
                 }),
-                animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
+                animate('600ms cubic-bezier(0.19, 1, 0.22, 1)', style({
                     opacity: '1',
                 }))
             ]),
@@ -39,7 +39,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
                 style({
                     opacity: '1',
                 }),
-                animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
+                animate('600ms cubic-bezier(0.19, 1, 0.22, 1)', style({
                     opacity: '0',
                 }))
             ])

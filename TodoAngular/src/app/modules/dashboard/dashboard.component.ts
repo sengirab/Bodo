@@ -9,11 +9,13 @@ import {Router} from '@angular/router';
 export class DashboardComponent implements OnInit {
 
     List: {Id: string, Name: string} = null;
+    User: any = {};
 
     constructor(private authentication: AuthenticationService, private router: Router) {
     }
 
     ngOnInit() {
+        this.User = this.authentication.User;
     }
 
     /**

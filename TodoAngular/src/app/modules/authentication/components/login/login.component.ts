@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, NgForm} from '@angular/forms';
 import {AuthenticationService} from '../../services/authentication.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ListsService} from '../../../dashboard/services/lists.service';
 
 @Component({
     selector: 'app-login',
@@ -11,7 +12,11 @@ export class LoginComponent implements OnInit {
 
     Form: FormGroup;
 
-    constructor(private fb: FormBuilder, private authentication: AuthenticationService, private router: Router) {
+    constructor(private fb: FormBuilder,
+                private authentication: AuthenticationService,
+                private lists: ListsService,
+                private router: Router,
+                private route: ActivatedRoute) {
     }
 
     /**
@@ -32,6 +37,10 @@ export class LoginComponent implements OnInit {
      */
     async Login(f: NgForm) {
         await this.authentication.Login(f);
+
+        if(typeof this.route.snapshot.queryParams['list'] !== 'undefined') {
+            await this.lists.AcceptInvitation(this.route.snapshot.queryParams['list'])
+        }
 
         this.router.navigate(['/']);
     }

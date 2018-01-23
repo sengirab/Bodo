@@ -11,9 +11,10 @@ $font-path: "../node_modules/foundation-icon-fonts/foundation-icons";
 }
 
 @import "~foundation-icon-fonts/foundation-icons.css";
-
 @import "~foundation-sites/scss/foundation";
 @import "settings";
+
+@include foundation-everything(false, false);
 
 .tabs-title > a:focus, .tabs-title.is-active > a {
     background: #e6e6e6 !important;
@@ -51,46 +52,49 @@ app-todo-item {
     display: block;
 }
 
-$green: #22b573;
-$grey: #555;
-$transitionSpeed: 200ms;
+.todo-checkbox-holder {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    margin-top: 2px !important;
+    position: relative;
+}
 
 input[type="checkbox"] + label {
-    width: 30px;
-    height: 30px;
-    border: 5px solid $grey;
-    top: 50%;
-    left: 10%;
-    transform: translate(-50%, -50%);
-    transition: all ease-out $transitionSpeed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #555;
+    border-radius: 3px;
+    transition: all ease-out 200ms;
     text-indent: 90px;
     font: normal normal 30px/60px "Helvetica";
     white-space: nowrap;
-    color: $grey;
+    color: #555;
     user-select: none;
+    margin: 0 !important;
 
     &:after {
         content: "";
         position: absolute;
-        width: 0px;
-        height: 10px;
-        border-bottom: 5px solid $green;
-        border-left: 5px solid $green;
-        top: 15%;
+        width: 0;
+        height: 8px;
+        border-bottom: 2px solid #555;
+        border-left: 2px solid #555;
+        top: 25%;
         left: 50%;
         transform-origin: bottom left;
-        transform: rotate(-45deg);
+        transform: rotate(-50deg);
         opacity: 0;
-        transition: all ease-out $transitionSpeed;
+        transition: all ease-out 200ms;
     }
 }
 
 input[type="checkbox"]:checked + label {
-    border: 5px solid $green;
+    border: 2px solid #555;
 
     &:after {
         opacity: 1;
-        width: 30px;
+        width: 20px;
     }
 }
 
@@ -119,4 +123,47 @@ app-dynamic-modal {
     display: block;
 }
 
-@include foundation-everything(false, false);
+.tabs-content {
+    border: none;
+
+    .tabs-panel {
+        padding: 0;
+    }
+}
+
+.todo-callout {
+    border: none;
+    margin: 10px 0 0;
+    height: 35px;
+    padding: 5px 10px;
+
+    h6 {
+        margin-bottom: 0;
+        margin-top: 1px;
+    }
+}
+
+.close-reveal-modal {
+    color: #AAAAAA;
+    cursor: pointer;
+    font-size: 2.22222rem;
+    font-weight: bold;
+    line-height: 1;
+    position: absolute;
+    top: 0.55556rem;
+    right: 1.22222rem;
+    text-decoration: none;
+}
+
+.modal-form--w-title {
+    margin-top: 2.55556rem;
+}
+
+.list-spacer {
+    border-bottom: 1px solid grey;
+    font-weight: bold;
+}
+
+.font-bold {
+    font-weight: bold;
+}

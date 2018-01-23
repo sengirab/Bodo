@@ -14,7 +14,8 @@ export interface ListEmitables {
 export class ListsService extends EmitableService {
 
     Emitables = {
-        Lists: []
+        Lists: [],
+        Shared: null
     };
 
     constructor(private http: HttpClient, private authentication: AuthenticationService) {
@@ -29,6 +30,16 @@ export class ListsService extends EmitableService {
     async GetLists() {
         this.Emitables.Lists = (<any[]>await this.http.get(`${API_CLIENT}lists`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
         this.Emit(this.Emitables, 'Lists')
+    }
+
+    /**
+     *
+     * @returns {Observable<Object>}
+     * @constructor
+     */
+    async GetSharedLists() {
+        this.Emitables.Shared = (<any[]>await this.http.get(`${API_CLIENT}lists/shared`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
+        this.Emit(this.Emitables, 'Shared')
     }
 
     /**
@@ -54,5 +65,34 @@ export class ListsService extends EmitableService {
 
         this.Emitables.Lists = this.Emitables.Lists.filter((l) => l.Id !== Id);
         this.Emit(this.Emitables, 'Lists')
+    }
+
+    /**
+     *
+     * @param {string[]} Members
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async InviteMembers(Members: string[]) {
+        await this.http.post(`${API_CLIENT}lists/invite`, Members, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
+    }
+
+    /**
+     *
+     * @param {string[]} ListId
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async AcceptInvitation(ListId: string[]) {
+        await this.http.post(`${API_CLIENT}lists/accept`, {ListId}, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
+    }
+
+    /**
+     *
+     * @returns {Observable<Object>}
+     * @constructor
+     */
+    async GetListUsers(Id: string) {
+        return this.http.get(`${API_CLIENT}lists/users/${Id}`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise()
     }
 }

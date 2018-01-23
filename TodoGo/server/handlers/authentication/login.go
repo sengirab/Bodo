@@ -16,7 +16,6 @@ func Login(c *gin.Context) {
 	db := database.DB
 
 	var credentials domain.Credentials
-	var user domain.User
 
 	bytes, _ := ioutil.ReadAll(c.Request.Body)
 	err := json.Unmarshal(bytes, &credentials)
@@ -27,6 +26,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	var user domain.User
 	err = db.Model(&user).Where("username = ?", credentials.Username).First()
 
 	if err != nil {

@@ -34,6 +34,7 @@ export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
         });
 
         await this.lists.GetLists();
+        await this.lists.GetSharedLists();
 
         if (this.Fillables.Lists.length > 0) {
             this.SelectCategory(this.Fillables.Lists[0].Id, this.Fillables.Lists[0].Name);
@@ -54,31 +55,24 @@ export class CategoryListComponent extends SubscriberComponent<ListEmitables> {
 
     /**
      *
-     * @param {string} Id
-     * @returns {Promise<void>}
      * @constructor
      */
-    async DeleteList(Id: string) {
-        await this.lists.DeleteList(Id);
-
-        if (this.Fillables.Lists.length == 0) {
-            this.SelectCategory('', '', true);
-            return;
-        }
-
-        this.SelectCategory(this.Fillables.Lists[0].Id, this.Fillables.Lists[0].Name);
-    }
-
-    /**
-     *
-     * @constructor
-     */
-    EditList() {
+    EditList(List: any) {
         this.modals.AddModal(
             new PlatformModal({
                 component: ListModalComponent,
-                title: 'Edit list',
-                inputs: {}
+                title: ``,
+                inputs: {
+                    List: List,
+                    Deleted: () => {
+                        if (this.Fillables.Lists.length == 0) {
+                            this.SelectCategory('', '', true);
+                            return;
+                        }
+
+                        this.SelectCategory(this.Fillables.Lists[0].Id, this.Fillables.Lists[0].Name);
+                    }
+                }
             })
         );
     }

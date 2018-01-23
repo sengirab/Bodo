@@ -14,3 +14,13 @@ func UuidFromString(string string) uuid.UUID {
 
 	return u
 }
+
+func UuidSliceToStringSlice(slice []uuid.UUID) []string {
+	var stringSlice []string
+
+	for _, v := range slice {
+		stringSlice = append(stringSlice, v.String())
+	}
+
+	return stringSlice
+}

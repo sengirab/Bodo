@@ -6,7 +6,19 @@
     <li *ngFor="let list of Fillables.Lists">
         <span (click)="SelectCategory(list.Id, list.Name)">{{list.Name}}</span>
 
-        <i (click)="EditList()" class="float-right fi-widget trash-list"></i>
+        <i (click)="EditList(list)" class="float-right fi-widget trash-list"></i>
         <span class="float-right">{{list.TodoCount}}</span>
     </li>
+
+    <div *ngIf="Fillables.Shared">
+        <p></p>
+        <p class="list-spacer">Shared with you</p>
+
+        <li *ngFor="let list of Fillables.Shared">
+            <span (click)="SelectCategory(list.Id, list.Name)">{{list.Name}}</span>
+
+            <i (click)="EditList(list)" class="float-right fi-widget trash-list"></i>
+            <span class="float-right">{{list.TodoCount}}</span>
+        </li>
+    </div>
 </ul>
