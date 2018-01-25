@@ -1,13 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit}                          from '@angular/core';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 
-import {SubscriberComponent} from '../../../../shared/abstract/subsciber-component.abstract';
+import {SubscriberComponent}        from '../../../../shared/abstract/subsciber-component.abstract';
 import {TodoEmitables, TodoService} from './services/todo.service';
-import {ModalsService} from '../../../../components/modals/service/modals.service';
+import {ModalsService}              from '../../../../components/modals/service/modals.service';
+import {easeInOut}                  from '../../../../shared/animations/ease-in-out';
 
 @Component({
     selector: 'app-todo-detail',
     templateUrl: './todo-detail.component.html',
+    animations: [
+        easeInOut
+    ],
 })
 export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> implements OnInit {
 

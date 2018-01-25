@@ -1,17 +1,17 @@
 <a class="close-reveal-modal detail" (click)="CloseDetail()">&#215;</a>
 
 <form (ngSubmit)="UpdateTodo(pf)" [formGroup]="PatchForm" #pf="ngForm">
-    <input type="text" placeholder="" name="Text" formControlName="Text">
+    <input type="text" placeholder="" name="Text" formControlName="Text" autocomplete="off">
 </form>
 
 <form (ngSubmit)="AddChildTodo(cf)" [formGroup]="ChildForm" #cf="ngForm">
-    <input type="text" placeholder="Add a subtask" name="Text" formControlName="Text">
+    <input type="text" placeholder="Add a subtask" name="Text" formControlName="Text" autocomplete="off" class="input--no-margin">
 </form>
 
-<div *ngIf="Fillables.Todos.length > 0">
-    <app-todo-item *ngFor="let todo of Fillables.Todos" (deleted)="Delete($event)" (completed)="Complete($event)" [todo]="todo"></app-todo-item>
+<div *ngIf="Fillables.Todos.length > 0" class="todo-detail--list">
+    <app-todo-item *ngFor="let todo of Fillables.Todos" (deleted)="Delete($event)" (completed)="Complete($event)" [todo]="todo" @easeInOut></app-todo-item>
 </div>
 
 
 <span>Completed Todos ({{Fillables.Completed.length}})</span>
-<app-todo-item *ngFor="let todo of Fillables.Completed" (deleted)="Delete($event)" (completed)="Complete($event)" [todo]="todo"></app-todo-item>
+<app-todo-item *ngFor="let todo of Fillables.Completed" (deleted)="Delete($event)" (completed)="Complete($event)" [todo]="todo" @easeInOut></app-todo-item>

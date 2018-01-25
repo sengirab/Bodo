@@ -1,40 +1,17 @@
 import {Component, HostBinding, Input, OnChanges, SimpleChanges} from '@angular/core';
 
-import {SubscriberComponent} from '../../../../shared/abstract/subsciber-component.abstract';
+import {SubscriberComponent}          from '../../../../shared/abstract/subsciber-component.abstract';
 import {TodosEmitables, TodosService} from '../../services/todos.service';
-import {TodoService} from '../todo-detail/services/todo.service';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {ModalsService} from '../../../../components/modals/service/modals.service';
+import {TodoService}                  from '../todo-detail/services/todo.service';
+import {ModalsService}                from '../../../../components/modals/service/modals.service';
+import {easeInOut}                    from '../../../../shared/animations/ease-in-out';
 
 
 @Component({
     selector: 'app-todo-list',
     templateUrl: './todo-list.component.html',
     animations: [
-        trigger('easeInOut', [
-            transition(':enter', [
-                style({
-                    height: 0,
-                    width: '100%',
-                    overflow: 'hidden'
-                }),
-                animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
-                    overflow: 'hidden',
-                    height: 45
-                }))
-            ]),
-            transition(':leave', [
-                style({
-                    overflow: 'hidden',
-                    height: 45,
-                    width: '100%'
-                }),
-                animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
-                    overflow: 'hidden',
-                    height: 0
-                }))
-            ])
-        ])
+        easeInOut
     ],
 })
 export class TodoListComponent extends SubscriberComponent<TodosEmitables> implements OnChanges {
