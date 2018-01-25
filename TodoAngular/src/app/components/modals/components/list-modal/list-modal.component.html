@@ -2,6 +2,10 @@
     <input type="text" placeholder="Create list" name="Name" id="Name" formControlName="Name">
 </form>
 
+<div class="clearfix">
+    <button class="button alert float-right" (click)="DeleteList()">Delete</button>
+</div>
+
 <p>Invite member's to share this list with them. They can also invite members, add, edit and schedule todos</p>
 
 <p>(Invite member's by comma separating their emails)</p>
@@ -10,6 +14,6 @@
     <button class="button float-right">Share</button>
 </form>
 
-<p class="font-bold">Members:</p>
-<p><span *ngFor="let member of Members; let last = last;">{{member.FirstName}} {{member.LastName}}<span
+<p class="font-bold" *ngIf="Members.length > 0">Members:</p>
+<p><span *ngFor="let member of Members; let last = last;">{{member.FirstName | capitalize}} {{member.LastName | capitalize}}<span
     *ngIf="!last">, </span></span></p>

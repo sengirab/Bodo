@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit}              from '@angular/core';
 import {FormBuilder, FormGroup, NgForm} from '@angular/forms';
-import {AuthenticationService} from '../../services/authentication.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ListsService} from '../../../dashboard/services/lists.service';
+import {AuthenticationService}          from '../../services/authentication.service';
+import {ActivatedRoute, Router}         from '@angular/router';
+import {ListsService}                   from '../../../dashboard/services/lists.service';
 
 @Component({
     selector: 'app-login',

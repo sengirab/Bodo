@@ -1,0 +1,5 @@
+<div class="notification-holder">
+    <div *ngFor="let notification of platformNotifications;" @fromTop>
+        <app-notification [Notification]="notification"></app-notification>
+    </div>
+</div>

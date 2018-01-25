@@ -1,3 +1,5 @@
+<a class="close-reveal-modal detail" (click)="CloseDetail()">&#215;</a>
+
 <form (ngSubmit)="UpdateTodo(pf)" [formGroup]="PatchForm" #pf="ngForm">
     <input type="text" placeholder="" name="Text" formControlName="Text">
 </form>

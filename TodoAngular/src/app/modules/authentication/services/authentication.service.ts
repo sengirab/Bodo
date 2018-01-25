@@ -52,7 +52,7 @@ export class AuthenticationService {
      */
     async Validate() {
         try {
-            this.User = (<User>await this.http.get(`${API_CLIENT}user/validate`, {headers: PrepareHeaders(this.Token)}).toPromise());
+            this.User = (<User>await this.http.get(`${API_CLIENT}user/validate`).toPromise());
 
             return true
         } catch (err) {

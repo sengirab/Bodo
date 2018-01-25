@@ -37,7 +37,10 @@ export class ListModalComponent implements OnInit {
             Emails: ['', Validators.required],
         });
 
-        this.Members = <any>await this.lists.GetListUsers(this.List.Id);
+        let members = <any>await this.lists.GetListUsers(this.List.Id);
+        if(members !== null) {
+            this.Members = members
+        }
     }
 
     /**
@@ -65,15 +68,15 @@ export class ListModalComponent implements OnInit {
 
     /**
      *
-     * @param {string} Id
      * @returns {Promise<void>}
      * @constructor
      */
-    async DeleteList(Id: string) {
-        await this.lists.DeleteList(Id);
+    async DeleteList() {
+        await this.lists.DeleteList(this.List.Id);
 
         // If list is deleted we need to switch to another list.
         // We need to do this from within the caller that holds the list.
         this.Deleted();
+        this.modals.RemoveModal()
     }
 }

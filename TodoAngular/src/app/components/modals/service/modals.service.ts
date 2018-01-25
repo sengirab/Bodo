@@ -1,11 +1,13 @@
-import {EventEmitter, Injectable, InjectionToken} from "@angular/core";
-import {PlatformModal} from "../modal";
+import {EventEmitter, Injectable, InjectionToken} from '@angular/core';
+import {PlatformModal} from '../modal';
 
 @Injectable()
 export class ModalsService {
     Modal: PlatformModal = null;
     ModalListener: EventEmitter<PlatformModal> = new EventEmitter();
     CurrentTokens: { [value: string]: InjectionToken<any> } = {};
+
+    Overlay: boolean = false;
 
     constructor() {
     }
@@ -30,6 +32,22 @@ export class ModalsService {
 
         this.ModalListener.emit(this.Modal);
         ModalsService.EnableScroll();
+    }
+
+    /**
+     *
+     * @constructor
+     */
+    TriggerOverlay() {
+        this.Overlay = !this.Overlay;
+
+        if(this.Overlay) {
+            ModalsService.DisableScroll();
+        } else {
+            ModalsService.EnableScroll();
+        }
+
+        this.ModalListener.emit(null);
     }
 
     /**

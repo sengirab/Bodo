@@ -4,6 +4,7 @@ import {SubscriberComponent} from '../../../../shared/abstract/subsciber-compone
 import {TodosEmitables, TodosService} from '../../services/todos.service';
 import {TodoService} from '../todo-detail/services/todo.service';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {ModalsService} from '../../../../components/modals/service/modals.service';
 
 
 @Component({
@@ -46,7 +47,9 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
         ShowCompleted: <boolean>false
     };
 
-    constructor(private todos: TodosService, private todo: TodoService) {
+    constructor(private todos: TodosService,
+                private todo: TodoService,
+                private modals: ModalsService) {
         super(todos);
     }
 
@@ -116,6 +119,8 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
      */
     SetTodo(Todo: any) {
         this.todo.SetTodo(Todo);
+
+        this.modals.TriggerOverlay();
     }
 
     /**

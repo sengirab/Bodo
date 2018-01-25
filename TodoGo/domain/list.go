@@ -1,6 +1,10 @@
 package domain
 
-import "github.com/satori/go.uuid"
+import (
+	"github.com/satori/go.uuid"
+	"github.com/go-pg/pg/orm"
+	"time"
+)
 
 type List struct {
 	Model
@@ -10,4 +14,12 @@ type List struct {
 	Todos     []*Todo     `json:"-"`
 	Users     []uuid.UUID `pg:",array"`
 	UserId    uuid.UUID   `sql:",type:uuid"`
+}
+
+func (l *List) BeforeInsert(db orm.DB) error {
+	if l.CreatedAt.IsZero() {
+		l.CreatedAt = time.Now()
+	}
+
+	return nil
 }

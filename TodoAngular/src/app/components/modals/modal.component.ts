@@ -3,7 +3,6 @@ import {PlatformModal} from './modal';
 import {ModalsService} from './service/modals.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 
-
 @Component({
     selector: 'app-modal',
     templateUrl: './modal.component.html',
@@ -49,6 +48,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 export class ModalComponent implements OnInit {
 
     Modal: PlatformModal = null;
+    TriggerOverlay: boolean = false;
 
     constructor(private modals: ModalsService) {
 
@@ -60,6 +60,8 @@ export class ModalComponent implements OnInit {
     ngOnInit() {
         this.modals.ModalListener.subscribe((modal) => {
             this.Modal = modal;
+
+            this.TriggerOverlay = this.modals.Overlay;
         })
     }
 }

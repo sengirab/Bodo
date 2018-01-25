@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 
 import {SubscriberComponent} from '../../../../shared/abstract/subsciber-component.abstract';
 import {TodoEmitables, TodoService} from './services/todo.service';
+import {ModalsService} from '../../../../components/modals/service/modals.service';
 
 @Component({
     selector: 'app-todo-detail',
@@ -17,7 +18,9 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
         SetForm: () => this.SetForm()
     };
 
-    constructor(private todo: TodoService, private form: FormBuilder) {
+    constructor(private todo: TodoService,
+                private form: FormBuilder,
+                private modals: ModalsService) {
         super(todo);
     }
 
@@ -57,7 +60,7 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
 
         };
 
-        await this.todo.UpdateTodo(Todo)
+        await this.todo.UpdateTodo(Todo);
     }
 
     /**
@@ -66,7 +69,7 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
      * @constructor
      */
     async AddChildTodo(f: NgForm) {
-        await this.todo.AddChildTodo(f)
+        await this.todo.AddChildTodo(f);
     }
 
     /**
@@ -74,8 +77,8 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
      * @returns {Promise<void>}
      * @constructor
      */
-    async Complete(TaskRequest: {TodoId: string, Completed: boolean}) {
-        await this.todo.CompleteTodo(TaskRequest.TodoId, TaskRequest.Completed)
+    async Complete(TaskRequest: { TodoId: string, Completed: boolean }) {
+        await this.todo.CompleteTodo(TaskRequest.TodoId, TaskRequest.Completed);
     }
 
     /**
@@ -86,5 +89,15 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
      */
     async Delete(Id: string) {
         await this.todo.DeleteTodo(Id);
+    }
+
+    /**
+     *
+     * @constructor
+     */
+    CloseDetail() {
+        this.todo.SetTodo(null);
+
+        this.modals.TriggerOverlay();
     }
 }

@@ -1,2 +1,2 @@
-<div class="reveal-overlay opened" *ngIf="Modal !== null" @fadeIn></div>
+<div class="reveal-overlay opened" *ngIf="Modal !== null || TriggerOverlay" @fadeIn></div>
 <app-dynamic-modal *ngIf="Modal !== null" [Modal]="Modal" @fromTop></app-dynamic-modal>

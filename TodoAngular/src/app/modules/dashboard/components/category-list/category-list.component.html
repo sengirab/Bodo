@@ -6,7 +6,10 @@
     <li *ngFor="let list of Fillables.Lists">
         <span (click)="SelectCategory(list.Id, list.Name)">{{list.Name}}</span>
 
-        <i (click)="EditList(list)" class="float-right fi-widget trash-list"></i>
+        <span *ngIf="list.Name.toLowerCase() !== 'inbox'">
+            <i (click)="EditList(list)" class="float-right fi-widget trash-list"></i>
+        </span>
+
         <span class="float-right">{{list.TodoCount}}</span>
     </li>
 

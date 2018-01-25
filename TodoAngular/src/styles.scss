@@ -153,6 +153,10 @@ app-dynamic-modal {
     top: 0.55556rem;
     right: 1.22222rem;
     text-decoration: none;
+    &.detail {
+        top: 0;
+        right: 15px;
+    }
 }
 
 .modal-form--w-title {
@@ -167,3 +171,56 @@ app-dynamic-modal {
 .font-bold {
     font-weight: bold;
 }
+
+.todo-detail--holder {
+    position: relative;
+    width: 100%;
+}
+
+.animate-column {
+    transition: 600ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+app-todo-detail {
+    z-index: 1006;
+    display: block;
+    position: fixed;
+    width: 25%;
+    right: 0;
+    padding: 44px 15px;
+    background: white;
+    height: 100%
+}
+
+.notification-holder {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 99;
+}
+
+.notification {
+    background-color: #484848;
+    width: 100%;
+    height: 50px;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.40);
+
+    .notification-message {
+        text-align: left;
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
+        margin: 0;
+        padding: 15px 0;
+    }
+
+    &.success {
+        background-color: #22bb5b;
+    }
+
+    &.error {
+        background-color: #cc4b37;
+    }
+}
+

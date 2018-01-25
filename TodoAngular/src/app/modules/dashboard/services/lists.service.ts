@@ -28,7 +28,7 @@ export class ListsService extends EmitableService {
      * @constructor
      */
     async GetLists() {
-        this.Emitables.Lists = (<any[]>await this.http.get(`${API_CLIENT}lists`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
+        this.Emitables.Lists = (<any[]>await this.http.get(`${API_CLIENT}lists`).toPromise());
         this.Emit(this.Emitables, 'Lists')
     }
 
@@ -38,7 +38,7 @@ export class ListsService extends EmitableService {
      * @constructor
      */
     async GetSharedLists() {
-        this.Emitables.Shared = (<any[]>await this.http.get(`${API_CLIENT}lists/shared`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
+        this.Emitables.Shared = (<any[]>await this.http.get(`${API_CLIENT}lists/shared`).toPromise());
         this.Emit(this.Emitables, 'Shared')
     }
 
@@ -49,7 +49,7 @@ export class ListsService extends EmitableService {
      * @param List
      */
     async AddList(List: NgForm) {
-        await this.http.post(`${API_CLIENT}lists`, List.value, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
+        await this.http.post(`${API_CLIENT}lists`, List.value).toPromise();
 
         await this.GetLists();
     }
@@ -61,7 +61,7 @@ export class ListsService extends EmitableService {
      * @constructor
      */
     async DeleteList(Id: string) {
-        await this.http.delete(`${API_CLIENT}lists/${Id}`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
+        await this.http.delete(`${API_CLIENT}lists/${Id}`).toPromise();
 
         this.Emitables.Lists = this.Emitables.Lists.filter((l) => l.Id !== Id);
         this.Emit(this.Emitables, 'Lists')
@@ -74,7 +74,7 @@ export class ListsService extends EmitableService {
      * @constructor
      */
     async InviteMembers(Members: string[]) {
-        await this.http.post(`${API_CLIENT}lists/invite`, Members, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
+        await this.http.post(`${API_CLIENT}lists/invite`, Members).toPromise();
     }
 
     /**
@@ -84,7 +84,7 @@ export class ListsService extends EmitableService {
      * @constructor
      */
     async AcceptInvitation(ListId: string[]) {
-        await this.http.post(`${API_CLIENT}lists/accept`, {ListId}, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
+        await this.http.post(`${API_CLIENT}lists/accept`, {ListId}).toPromise();
     }
 
     /**
@@ -93,6 +93,6 @@ export class ListsService extends EmitableService {
      * @constructor
      */
     async GetListUsers(Id: string) {
-        return this.http.get(`${API_CLIENT}lists/users/${Id}`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise()
+        return this.http.get(`${API_CLIENT}lists/users/${Id}`).toPromise()
     }
 }

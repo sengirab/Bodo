@@ -36,7 +36,7 @@ export class TodoService extends EmitableService {
         this.Emitables.Todos = [];
         this.Emitables.Completed = [];
 
-        if(Todo.Todos !== null) {
+        if(Todo !== null && Todo.Todos !== null) {
             const todos = TodosService.FillTodoLists(Todo.Todos);
 
             this.Emitables.Todos = todos.Todos;
@@ -52,7 +52,7 @@ export class TodoService extends EmitableService {
      * @constructor
      */
     async UpdateTodo(Todo: any) {
-        const PatchedTodo = <any>await this.http.patch(`${API_CLIENT}todos`, Todo, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
+        const PatchedTodo = <any>await this.http.patch(`${API_CLIENT}todos`, Todo).toPromise();
 
         this.Emitables.Todo = PatchedTodo;
         this.Emit(this.Emitables, 'Todo');
@@ -67,7 +67,7 @@ export class TodoService extends EmitableService {
      * @constructor
      */
     async DeleteTodo(Id: string) {
-        await this.http.delete(`${API_CLIENT}todos/${Id}`, {headers: PrepareHeaders(this.authentication.Token)}).toPromise();
+        await this.http.delete(`${API_CLIENT}todos/${Id}`).toPromise();
 
         let Todo: any = null;
         this.Emitables.Todos = this.Emitables.Todos.filter(t => {
@@ -89,7 +89,7 @@ export class TodoService extends EmitableService {
      * @constructor
      */
     async AddChildTodo(Todo: NgForm) {
-        const CreatedTodo = (<any>await this.http.post(`${API_CLIENT}todos`, Todo.value, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
+        const CreatedTodo = (<any>await this.http.post(`${API_CLIENT}todos`, Todo.value).toPromise());
 
 
         this.Emitables.Todos.unshift(CreatedTodo);
@@ -106,7 +106,7 @@ export class TodoService extends EmitableService {
      * @constructor
      */
     async CompleteTodo(TodoId: string, Completed: boolean) {
-        const Todo = (<any>await this.http.post(`${API_CLIENT}todos/complete`, {TodoId, Completed}, {headers: PrepareHeaders(this.authentication.Token)}).toPromise());
+        const Todo = (<any>await this.http.post(`${API_CLIENT}todos/complete`, {TodoId, Completed}).toPromise());
 
         this.completeAndChangePosition(Todo);
 

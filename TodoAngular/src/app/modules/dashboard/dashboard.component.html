@@ -11,11 +11,11 @@
         <app-category-list (selected)="SelectList($event)"></app-category-list>
     </div>
     <div [hidden]="List === null">
-        <div class="medium-7 columns">
+        <div class="columns medium-10">
             <app-todo-list [list]="List"></app-todo-list>
         </div>
-        <div class="medium-3 columns">
-            <app-todo-detail></app-todo-detail>
-        </div>
+
+
+        <app-todo-detail *ngIf="Fillables.Todo" @fromRight></app-todo-detail>
     </div>
 </div>
