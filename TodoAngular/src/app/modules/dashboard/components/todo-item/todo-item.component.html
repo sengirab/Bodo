@@ -5,6 +5,7 @@
         <label [for]="'check-' + Todo.Id"></label>
     </div>
 
-    <h6 (click)="Clicked()" class="float-left">{{Todo.Text}}</h6>
+    <app-edit-input *ngIf="Todo.ParentId.Valid" class="float-left todo-edit--input" [Text]="Todo.Text"></app-edit-input>
+    <h6 *ngIf="!Todo.ParentId.Valid" (click)="Clicked()" class="float-left">{{Todo.Text}}</h6>
     <i (click)="Delete()" class="float-right fi-trash trash-list"></i>
 </div>

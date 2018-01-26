@@ -1,8 +1,10 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {NgModule}                         from '@angular/core';
+import {CommonModule}                     from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
-import {CapitalizePipe} from './pipes/capitalize.pipe';
+import {RouterModule}                     from '@angular/router';
+
+import {CapitalizePipe}                   from './pipes/capitalize.pipe';
+import {EditInputComponent}               from './components/edit-input.component';
 
 @NgModule({
     imports: [
@@ -17,10 +19,15 @@ import {CapitalizePipe} from './pipes/capitalize.pipe';
         FormsModule,
         RouterModule,
         //
+        EditInputComponent,
+        //
         CapitalizePipe
     ],
     declarations: [
-        CapitalizePipe
+        //
+        EditInputComponent,
+        //
+        CapitalizePipe,
     ]
 })
 export class SharedModule {

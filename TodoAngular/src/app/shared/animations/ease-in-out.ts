@@ -9,13 +9,13 @@ export const easeInOut = trigger('easeInOut', [
         }),
         animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
             overflow: 'hidden',
-            height: 45
+            height: 50
         }))
     ]),
     transition(':leave', [
         style({
             overflow: 'hidden',
-            height: 45,
+            height: 50,
             width: '100%'
         }),
         animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
