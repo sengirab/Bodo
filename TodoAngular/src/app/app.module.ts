@@ -15,12 +15,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ModalsService}           from './components/modals/service/modals.service';
 import {ListModalComponent}      from './components/modals/components/list-modal/list-modal.component';
 import {ModalComponent}          from './components/modals/modal.component';
-import {DynamicModalComponent}   from './components/modals/components/dynamic-modal/dynamic-modal.component';
-import {NotificationService}     from './components/notifications/service/notification.service';
-import {NotificationsComponent}  from './components/notifications/notifications.component';
-import {NotificationComponent}   from './components/notifications/components/notification/notification.component';
-import {AuthInterceptor}         from './interceptors/auth.interceptor';
-import {ErrorInterceptor}        from './interceptors/error.interceptor';
+import {DynamicModalComponent}  from './components/modals/components/dynamic-modal/dynamic-modal.component';
+import {NotificationService}    from './components/notifications/service/notification.service';
+import {NotificationsComponent} from './components/notifications/notifications.component';
+import {NotificationComponent}  from './components/notifications/components/notification/notification.component';
+import {AuthInterceptor}        from './interceptors/auth.interceptor';
+import {ErrorInterceptor}       from './interceptors/error.interceptor';
+import {SyncEventService}       from './shared/services/sync-event.service';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import {ErrorInterceptor}        from './interceptors/error.interceptor';
         ListsService,
         ModalsService,
         NotificationService,
+        SyncEventService,
 
         // Interceptors
         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

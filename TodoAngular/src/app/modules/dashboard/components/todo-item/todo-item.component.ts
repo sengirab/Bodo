@@ -9,6 +9,7 @@ export class TodoItemComponent implements OnInit {
     @Output('deleted') DeleteEmitter: EventEmitter<string> = new EventEmitter<string>();
     @Output('completed') CompleteEmitter: EventEmitter<any> = new EventEmitter<any>();
     @Output('clicked') ClickedEmitter: EventEmitter<any> = new EventEmitter<any>();
+    @Output('edited') EditedEmitter: EventEmitter<any> = new EventEmitter<any>();
 
     @Input('todo') Todo: any = null;
 
@@ -36,6 +37,15 @@ export class TodoItemComponent implements OnInit {
      */
     Delete() {
         this.DeleteEmitter.emit(this.Todo.Id);
+    }
+
+    /**
+     *
+     * @param {string} title
+     * @constructor
+     */
+    Edited(title: string) {
+        this.EditedEmitter.emit({...this.Todo, Text: title});
     }
 
     /**

@@ -5,6 +5,7 @@ import {SubscriberComponent}        from '../../../../shared/abstract/subsciber-
 import {TodoEmitables, TodoService} from './services/todo.service';
 import {ModalsService}              from '../../../../components/modals/service/modals.service';
 import {easeInOut}                  from '../../../../shared/animations/ease-in-out';
+import {SyncEventService}           from '../../../../shared/services/sync-event.service';
 
 @Component({
     selector: 'app-todo-detail',
@@ -24,7 +25,8 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
 
     constructor(private todo: TodoService,
                 private form: FormBuilder,
-                private modals: ModalsService) {
+                private modals: ModalsService,
+                private syncEvent: SyncEventService) {
         super(todo);
     }
 
@@ -32,6 +34,19 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
         super.ngOnInit();
 
         this.SetForm();
+
+        let that = this;
+        let KFunc = function KFunc(event: any) {
+            switch (event.keyCode) {
+                case 27:
+                    that.CloseDetail();
+
+                    that.syncEvent.RemoveEvent('keyup', KFunc);
+                    break;
+            }
+        };
+
+        this.syncEvent.AddEvent('keyup', KFunc);
     }
 
     /**
@@ -65,6 +80,15 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
         };
 
         await this.todo.UpdateTodo(Todo);
+    }
+
+    /**
+     *
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async TodoEdited(Todo: any) {
+        await this.todo.UpdateChild(Todo);
     }
 
     /**

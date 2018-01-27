@@ -48,6 +48,28 @@ export class TodoService extends EmitableService {
 
     /**
      *
+     * @param Todo
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async UpdateChild(Todo: any) {
+        const PatchedTodo = <any>await this.http.patch(`${API_CLIENT}todos`, Todo).toPromise();
+
+        this.Emitables.Todo.Todos = this.Emitables.Todo.Todos.map((t) => {
+            if (t.Id === PatchedTodo.Id) {
+                t = PatchedTodo;
+            }
+
+            return t
+        });
+
+        this.Emit(this.Emitables, 'Todo');
+
+        this.todos.ReplaceWithNew(this.Emitables.Todo)
+    }
+
+    /**
+     *
      * @returns {Promise<void>}
      * @constructor
      */
@@ -91,11 +113,16 @@ export class TodoService extends EmitableService {
     async AddChildTodo(Todo: NgForm) {
         const CreatedTodo = (<any>await this.http.post(`${API_CLIENT}todos`, Todo.value).toPromise());
 
-
         this.Emitables.Todos.unshift(CreatedTodo);
+        // Add new t in our current t list.
+        if(this.Emitables.Todo.Todos !== null) {
+            this.Emitables.Todo.Todos.unshift(CreatedTodo);
+        } else {
+            this.Emitables.Todo.Todos = [CreatedTodo];
+        }
 
-        this.Emit(this.Emitables, 'Todos');
-        this.todos.ReplaceWithNew(this.Emitables.Todo)
+        this.todos.ReplaceWithNew(this.Emitables.Todo);
+        this.Emit(this.Emitables, 'Todo', 'Todos');
     }
 
     /**

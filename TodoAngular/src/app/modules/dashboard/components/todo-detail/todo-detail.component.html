@@ -9,7 +9,7 @@
 </form>
 
 <div *ngIf="Fillables.Todos.length > 0" class="todo-detail--list">
-    <app-todo-item *ngFor="let todo of Fillables.Todos" (deleted)="Delete($event)" (completed)="Complete($event)" [todo]="todo" @easeInOut></app-todo-item>
+    <app-todo-item *ngFor="let todo of Fillables.Todos" (deleted)="Delete($event)" (completed)="Complete($event)" (edited)="TodoEdited($event)" [todo]="todo" @easeInOut></app-todo-item>
 </div>
 
 

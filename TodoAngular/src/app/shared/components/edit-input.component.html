@@ -1,2 +1,2 @@
-<h6 *ngIf="!Dom.InputInFocus" (click)="Switch()" [ngClass]="GeneratedClass">{{Text}}</h6>
-<input *ngIf="Dom.InputInFocus" type="text" [value]="Text">
+<h6 *ngIf="!Dom.InputInFocus" (click)="Switch()" [ngClass]="GeneratedClass">{{Value}}</h6>
+<input *ngIf="Dom.InputInFocus" type="text" [value]="Text" [(ngModel)]="Value">

@@ -1,5 +1,6 @@
 import {EventEmitter, Injectable, InjectionToken} from '@angular/core';
-import {PlatformModal} from '../modal';
+import {PlatformModal}                            from '../modal';
+import {SyncEventService}                         from '../../../shared/services/sync-event.service';
 
 @Injectable()
 export class ModalsService {
@@ -9,7 +10,7 @@ export class ModalsService {
 
     Overlay: boolean = false;
 
-    constructor() {
+    constructor(private syncEvent: SyncEventService) {
     }
 
     /**
@@ -21,6 +22,19 @@ export class ModalsService {
 
         this.Modal = modal;
         this.ModalListener.emit(this.Modal);
+
+        let that = this;
+        let KFunc = function KFunc(event: any) {
+            switch (event.keyCode) {
+                case 27:
+                    that.RemoveModal();
+
+                    that.syncEvent.RemoveEvent('keyup', KFunc);
+                    break;
+            }
+        };
+
+        this.syncEvent.AddEvent('keyup', KFunc);
     }
 
     /**
