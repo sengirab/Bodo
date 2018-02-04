@@ -299,7 +299,8 @@ app-todo-detail {
 
 
 .content--background {
-    background-image: url('./assets/images/08.jpg');
+    background: url('./assets/images/08.jpg') no-repeat center;
+    background-size: cover;
 }
 
 input[type="text"].create-todo--input::-webkit-input-placeholder {
