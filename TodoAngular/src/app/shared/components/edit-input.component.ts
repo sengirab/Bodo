@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 
 import {Guid}             from '../../utils/uuid';
 import {SyncEventService} from '../services/sync-event.service';
@@ -8,17 +8,24 @@ import {SyncEventService} from '../services/sync-event.service';
     templateUrl: './edit-input.component.html'
 })
 export class EditInputComponent implements OnInit {
+    @ViewChild('input') Input: ElementRef;
+
     @Input() Text: string = '';
-    @Output() Changed: EventEmitter<string> = new EventEmitter<string>();
+
+    @Output('changed') Changed: EventEmitter<string> = new EventEmitter<string>();
+    @Output('tab') TabEvent: EventEmitter<string> = new EventEmitter<string>();
 
     Value: string = '';
-    GeneratedClass = `input-${Guid()}`;
+    GeneratedClass = `${Guid()}`;
+    SyncEvent: SyncEventService;
     Dom = {
         InputInFocus: false
     };
 
     constructor(private element: ElementRef,
-                private syncEvent: SyncEventService) {
+                private syncEvent: SyncEventService,
+                private changeDetect: ChangeDetectorRef) {
+        this.SyncEvent = syncEvent;
     }
 
     /**
@@ -36,41 +43,72 @@ export class EditInputComponent implements OnInit {
         this.Dom.InputInFocus = !this.Dom.InputInFocus;
 
         if (this.Dom.InputInFocus) {
-            // Assigning that to this for reference within the named function.
-            let that = this;
+            setTimeout(() => {
+                this.Input.nativeElement.focus();
+            }, 0);
 
-            // Adding eventListener, named function so we can remove when its not needed anymore.
-            let CFunc = function CFunc(event: any) {
-                if (!that.element.nativeElement.contains(event.target) && event.target.className.indexOf(that.GeneratedClass) == -1) {
-                    that.Dom.InputInFocus = false;
-                    that.Changed.emit(that.Value);
-
-                    // Remove
-                    that.syncEvent.RemoveEvent('click', CFunc);
-                    that.syncEvent.RemoveEvent('keyup', KFunc);
-                }
-            };
-            let KFunc = function KFunc(event: any) {
-                switch (event.keyCode) {
-                    case 27:
-                        that.Dom.InputInFocus = false;
-                        that.Value = that.Text;
-
-                        that.syncEvent.RemoveEvent('click', CFunc);
-                        that.syncEvent.RemoveEvent('keyup', KFunc);
-                        break;
-                    case 13:
-                        that.Dom.InputInFocus = false;
-                        that.Changed.emit(that.Value);
-
-                        that.syncEvent.RemoveEvent('click', CFunc);
-                        that.syncEvent.RemoveEvent('keyup', KFunc);
-                        break;
-                }
-            };
-
-            this.syncEvent.AddEvent('keyup', KFunc);
-            this.syncEvent.AddEvent('click', CFunc);
+            this.syncEvent.AddEvent('click', e => this.HandleClick(e));
+            this.syncEvent.AddEvent('keyup', e => this.HandleKeyUp(e));
         }
     }
+
+    /**
+     *
+     * @param event
+     * @constructor
+     */
+    HandleClick(event) {
+        if (!this.element.nativeElement.contains(event.target) && event.target.className.indexOf(this.GeneratedClass) == -1) {
+            this.Dom.InputInFocus = false;
+            this.Changed.emit(this.Value);
+
+            // Remove
+            this.syncEvent.RemoveEvent('click');
+            this.syncEvent.RemoveEvent('keyup');
+        }
+    }
+
+    /**
+     *
+     * @param event
+     * @constructor
+     */
+    HandleKeyUp(event) {
+        switch (event.keyCode) {
+            case 27:
+                this.Dom.InputInFocus = false;
+                this.changeDetect.detectChanges();
+
+                this.Value = this.Text;
+
+                this.syncEvent.RemoveEvent('click');
+                this.syncEvent.RemoveEvent('keyup');
+                break;
+            case 13:
+                this.Dom.InputInFocus = false;
+                this.changeDetect.detectChanges();
+
+                this.Changed.emit(this.Value);
+                this.Text = this.Value;
+
+                this.syncEvent.RemoveEvent('click');
+                this.syncEvent.RemoveEvent('keyup');
+                break;
+        }
+    }
+
+    /**
+     *
+     * @constructor
+     */
+    InputKeyEvent(event) {
+        switch (event.keyCode) {
+            case 9:
+                event.preventDefault();
+
+                this.TabEvent.emit(event.shiftKey);
+                this.changeDetect.detectChanges();
+                break;
+        }
+    };
 }

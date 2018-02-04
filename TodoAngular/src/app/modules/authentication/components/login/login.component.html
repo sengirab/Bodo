@@ -1,14 +1,28 @@
-<div class="medium-4 columns form-centered">
-    <form (ngSubmit)="Login(f)" [formGroup]="Form" #f="ngForm" class="log-in-form">
-        <h4 class="text-center">Bodo</h4>
+<div class="card-wrapper form-centered">
+    <div class="brand">
+    </div>
+    <div class="card fat">
+        <div class="card-body">
+            <h4 class="card-title">Login</h4>
 
-        <label>Email
-            <input type="text" name="Email" id="Email" formControlName="Username">
-        </label>
-        <label>Password
-            <input type="password" name="Password" id="Password" formControlName="Password">
-        </label>
-        <p><input type="submit" class="button expanded" value="Log in"/></p>
-        <p class="text-center"><a [routerLink]="['/authentication/register']">Not a member yet?</a></p>
-    </form>
+            <form (ngSubmit)="Login(f)" [formGroup]="Form" #f="ngForm" class="log-in-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="Email" id="Email"
+                           formControlName="Username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="Password" id="Password"
+                           formControlName="Password">
+
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    Login
+                </button>
+                <p class="text-center"><a [routerLink]="['/authentication/register']">Not a member yet?</a>
+                </p>
+            </form>
+        </div>
+    </div>
 </div>

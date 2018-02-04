@@ -1,15 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {EditInputComponent}                                        from '../../../../shared/components/edit-input.component';
 
 @Component({
     selector: 'app-todo-item',
     templateUrl: './todo-item.component.html',
 })
 export class TodoItemComponent implements OnInit {
+    @ViewChild(EditInputComponent) EditInput: EditInputComponent;
 
     @Output('deleted') DeleteEmitter: EventEmitter<string> = new EventEmitter<string>();
     @Output('completed') CompleteEmitter: EventEmitter<any> = new EventEmitter<any>();
     @Output('clicked') ClickedEmitter: EventEmitter<any> = new EventEmitter<any>();
     @Output('edited') EditedEmitter: EventEmitter<any> = new EventEmitter<any>();
+
+    // Navigation between todos
+    @Output('next') NextEmitter: EventEmitter<any> = new EventEmitter<any>();
 
     @Input('todo') Todo: any = null;
 
@@ -21,6 +26,10 @@ export class TodoItemComponent implements OnInit {
      */
     ngOnInit() {
 
+    }
+
+    EmitSelf(shift: boolean) {
+        this.NextEmitter.emit({component: this, shift: shift})
     }
 
     /**

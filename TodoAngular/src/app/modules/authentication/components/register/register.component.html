@@ -1,41 +1,55 @@
-<div class="row">
-    <div class="medium-4 columns form-centered">
-        <form (ngSubmit)="Register(f)" [formGroup]="Form" #f="ngForm" class="log-in-form">
-            <h4 class="text-center">Bodo</h4>
+<div class="card-wrapper form-centered">
+    <div class="brand">
+    </div>
+    <div class="card fat">
+        <div class="card-body">
+            <h4 class="card-title">Sign up</h4>
 
-            <div class="row">
-                <div class="medium-6 columns">
-                    <label>First name
-                        <input type="text" name="FirstName" id="FirstName" formControlName="FirstName">
-                    </label>
-                </div>
-                <div class="medium-6 columns">
-                    <label>Last name
-                        <input type="text" name="LastName" id="LastName" formControlName="LastName">
-                    </label>
+            <form (ngSubmit)="Register(f)" [formGroup]="Form" #f="ngForm" class="log-in-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>First name</label>
+                            <input class="form-control" type="text" name="FirstName" id="FirstName" formControlName="FirstName">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Last name</label>
+                            <input class="form-control" type="text" name="LastName" id="LastName" formControlName="LastName">
+                        </div>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <label>Street</label>
+                            <input class="form-control" type="text" name="Street" id="Street" formControlName="Street">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Postal</label>
+                            <input class="form-control" type="text" name="Postal" id="Postal" formControlName="Postal">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="medium-9 columns">
-                    <label>Street
-                        <input type="text" name="Street" id="Street" formControlName="Street">
-                    </label>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input class="form-control" type="text" name="Email" id="Email" formControlName="Username">
                 </div>
-                <div class="medium-3 columns">
-                    <label>Postal
-                        <input type="text" name="Postal" id="Postal" formControlName="Postal">
-                    </label>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input class="form-control" type="password" name="Password" id="Password" formControlName="Password">
                 </div>
-            </div>
 
-            <label>Email
-                <input type="text" name="Email" id="Email" formControlName="Username">
-            </label>
-            <label>Password
-                <input type="password" name="Password" id="Password" formControlName="Password">
-            </label>
-
-            <p><input type="submit" class="button expanded" value="Sign up"/></p>
-            <p class="text-center"><a [routerLink]="['/authentication/login']">Already a member?</a></p>
-        </form>
+                <button type="submit" class="btn btn-primary btn-block">
+                    Sign up
+                </button>
+                <p class="text-center"><a [routerLink]="['/authentication/login']">Already a member?</a></p>
+            </form>
+        </div>
     </div>
 </div>

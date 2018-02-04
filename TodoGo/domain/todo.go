@@ -29,13 +29,16 @@ type TodoCompleteRequest struct {
 
 type Todo struct {
 	Model
-	Text        string
-	Completed   bool
-	CompletedAt pg.NullTime
+	Text           string
+	Completed      bool
+	CompletedAt    pg.NullTime
+	CompleteAt     pg.NullTime
+	ScheduledFor   []uuid.UUID `pg:",array"json:"-"`
+	ScheduledUsers []User      `sql:"-"`
 
-	Todos       []Todo        `pg:",fk:Parent"`
-	ParentId    uuid.NullUUID `sql:",type:uuid"`
-	ListId      uuid.UUID     `sql:",type:uuid"`
+	Todos    []Todo        `pg:",fk:Parent"`
+	ParentId uuid.NullUUID `sql:",type:uuid"`
+	ListId   uuid.UUID     `sql:",type:uuid"`
 }
 
 func (t *Todo) BeforeInsert(db orm.DB) error {

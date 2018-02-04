@@ -13,6 +13,12 @@ function HandlerFunction(ctx: SyncEventService, name: string) {
     }
 }
 
+// Sync handler service always handles the last event that was passed in.
+// This means that as soon as an event has been handled,
+// It needs to be removed by the user himself, or else the last event  passed in will,
+// keep firing on that specific event type e.g keyup, click, etc.
+// Service accepts anonymous function since it always handles the last event passed in.
+
 @Injectable()
 export class SyncEventService {
     Events: { [value: string]: Handler } = {};
@@ -37,28 +43,28 @@ export class SyncEventService {
      * @constructor
      */
     AddEvent(name: string, func: (event: any) => void) {
-        if (typeof this.Events[name] === 'undefined') {
-            this.Events[name] = {
-                Events: [func],
-                Handler: null
-            };
+        setTimeout(() => {
+            if (typeof this.Events[name] === 'undefined') {
+                this.Events[name] = {
+                    Events: [func],
+                    Handler: null
+                };
 
-            this.registerListener(name);
-
-            return;
-        }
-
-        this.Events[name].Events.push(func);
+                this.registerListener(name);
+                return;
+            }
+                this.Events[name].Events.push(func);
+        }, 0)
     }
 
     /**
      *
      * @param {string} name
-     * @param {(event: any) => void} func
      * @constructor
      */
-    RemoveEvent(name: string, func: (event: any) => void) {
-        this.Events[name].Events = this.Events[name].Events.filter(f => f.toString() !== func.toString());
+    RemoveEvent(name: string) {
+        // Since we always handle the last event, we can just pop.
+        this.Events[name].Events.pop();
 
         this.removeListener(name);
     }

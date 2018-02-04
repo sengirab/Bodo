@@ -1,19 +1,24 @@
 <form (ngSubmit)="EditList(eform)" [formGroup]="EForm" #eform="ngForm" class="modal-form--w-title">
-    <input type="text" placeholder="Create list" name="Name" id="Name" formControlName="Name">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Create list" name="Name" id="Name" formControlName="Name">
+    </div>
 </form>
 
 <div class="clearfix">
-    <button class="button alert float-right" (click)="DeleteList()">Delete</button>
+    <button type="button" class="btn btn-danger float-right" (click)="DeleteList()">Delete</button>
 </div>
 
+<p></p>
 <p>Invite member's to share this list with them. They can also invite members, add, edit and schedule todos</p>
 
 <p>(Invite member's by comma separating their emails)</p>
 <form (ngSubmit)="InviteMembers(iform)" [formGroup]="IForm" #iform="ngForm" class="clearfix">
-    <input type="text" placeholder="Email's" name="Email" id="Email" formControlName="Emails">
-    <button class="button float-right">Share</button>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Email's" name="Email" id="Email" formControlName="Emails">
+    </div>
+    <button type="button" class="btn btn-primary float-right">Share</button>
 </form>
 
-<p class="font-bold" *ngIf="Members.length > 0">Members:</p>
+<p class="font-weight-bold" *ngIf="Members.length > 0">Members:</p>
 <p><span *ngFor="let member of Members; let last = last;">{{member.FirstName | capitalize}} {{member.LastName | capitalize}}<span
     *ngIf="!last">, </span></span></p>

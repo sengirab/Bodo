@@ -1,17 +1,23 @@
-<a class="close-reveal-modal detail" (click)="CloseDetail()">&#215;</a>
+<button type="button" class="close close-reveal-modal detail" (click)="CloseDetail()">
+    <span aria-hidden="true">&times;</span>
+</button>
 
 <form (ngSubmit)="UpdateTodo(pf)" [formGroup]="PatchForm" #pf="ngForm">
-    <input type="text" placeholder="" name="Text" formControlName="Text" autocomplete="off">
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="" name="Text" formControlName="Text" autocomplete="off">
+    </div>
 </form>
 
 <form (ngSubmit)="AddChildTodo(cf)" [formGroup]="ChildForm" #cf="ngForm">
-    <input type="text" placeholder="Add a subtask" name="Text" formControlName="Text" autocomplete="off" class="input--no-margin">
+    <div class="form-group input--no-margin">
+        <input class="form-control" type="text" placeholder="Add a subtask" name="Text" formControlName="Text" autocomplete="off">
+    </div>
 </form>
 
 <div *ngIf="Fillables.Todos.length > 0" class="todo-detail--list">
-    <app-todo-item *ngFor="let todo of Fillables.Todos" (deleted)="Delete($event)" (completed)="Complete($event)" (edited)="TodoEdited($event)" [todo]="todo" @easeInOut></app-todo-item>
+    <app-todo-item *ngFor="let todo of Fillables.Todos" (deleted)="Delete($event)" (completed)="Complete($event)" (edited)="TodoEdited($event)" (next)="TodoTab($event)" [todo]="todo" @easeInOut></app-todo-item>
 </div>
 
 
-<span>Completed Todos ({{Fillables.Completed.length}})</span>
+<span class="completed-todos--counter">Completed Todos ({{Fillables.Completed.length}})</span>
 <app-todo-item *ngFor="let todo of Fillables.Completed" (deleted)="Delete($event)" (completed)="Complete($event)" [todo]="todo" @easeInOut></app-todo-item>

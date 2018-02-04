@@ -29,7 +29,7 @@ export class ModalsService {
                 case 27:
                     that.RemoveModal();
 
-                    that.syncEvent.RemoveEvent('keyup', KFunc);
+                    that.syncEvent.RemoveEvent('keyup');
                     break;
             }
         };

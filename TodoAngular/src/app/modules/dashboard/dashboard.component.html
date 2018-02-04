@@ -1,21 +1,24 @@
-<div class="padding-1">
-    <div class="medium-12 columns">
-        <div class="float-left top-bar-padding">
-            {{User.FirstName | capitalize}}
-        </div>
-        <div class="float-right top-bar-padding" (click)="Logout()">
-            Logout
-        </div>
-    </div>
-    <div class="medium-2 columns">
-        <app-category-list (selected)="SelectList($event)"></app-category-list>
-    </div>
-    <div [hidden]="List === null">
-        <div class="columns medium-10">
-            <app-todo-list [list]="List"></app-todo-list>
-        </div>
+<nav class="navbar navbar-dark bg-primary justify-content-between">
+    <a class="navbar-brand">{{User.FirstName | capitalize}}</a>
 
+    <form class="form-inline">
+        <button (click)="Logout()" class="btn btn-outline-light my-2 my-sm-0">Logout</button>
+    </form>
+</nav>
 
-        <app-todo-detail *ngIf="Fillables.Todo" @fromRight></app-todo-detail>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 hv-100">
+            <div class="mt-3">
+                <app-category-list (selected)="SelectList($event)"></app-category-list>
+            </div>
+        </div>
+        <div [hidden]="List === null" class="col-10 hv-100 content--background">
+            <div class="mt-3">
+                <app-todo-list [list]="List"></app-todo-list>
+
+                <app-todo-detail *ngIf="Fillables.Todo" @fromRight></app-todo-detail>
+            </div>
+        </div>
     </div>
 </div>

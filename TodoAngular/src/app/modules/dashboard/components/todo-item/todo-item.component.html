@@ -1,11 +1,17 @@
-<div class="callout secondary clearfix todo-callout" *ngIf="Todo !== null">
+<div class="clearfix todo-callout" *ngIf="Todo !== null">
 
     <div class="todo-checkbox-holder">
         <input type="checkbox" [id]="'check-' + Todo.Id" class="todo-checkbox" [checked]="Todo.Completed" (click)="Complete()"/>
         <label [for]="'check-' + Todo.Id"></label>
     </div>
 
-    <app-edit-input *ngIf="Todo.ParentId.Valid" class="float-left todo-edit--input" [Text]="Todo.Text" (Changed)="Edited($event)"></app-edit-input>
+    <app-edit-input *ngIf="Todo.ParentId.Valid && !Todo.Completed" class="float-left todo-edit--input" [Text]="Todo.Text" (changed)="Edited($event)" (tab)="EmitSelf($event)"></app-edit-input>
+    <h6 *ngIf="Todo.ParentId.Valid && Todo.Completed" (click)="Clicked()" class="float-left">{{Todo.Text}}</h6>
     <h6 *ngIf="!Todo.ParentId.Valid" (click)="Clicked()" class="float-left">{{Todo.Text}}</h6>
-    <i (click)="Delete()" class="float-right fi-trash trash-list"></i>
+
+    <span (click)="Delete()"><i class="fas fa-trash-alt float-right trash-todo ml-3"></i></span>
+
+    <span *ngIf="Todo.CompleteAt !== null" class="float-right">
+        {{Todo.CompleteAt | date:'E, LLL d'}}
+    </span>
 </div>

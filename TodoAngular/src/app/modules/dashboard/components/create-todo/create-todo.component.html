@@ -1,3 +1,14 @@
-<form (ngSubmit)="AddTodo(f)" [formGroup]="Form" #f="ngForm">
-    <input autocomplete="off" type="text" placeholder="Add todo in {{Name}} " name="Text" id="Text" formControlName="Text">
-</form>
+<div class="bodo--create-todo">
+    <form (ngSubmit)="AddTodo(f)" [formGroup]="Form" #f="ngForm">
+        <div class="form-group input--no-margin">
+            <span (click)="OpenPicker()" class="bodo--open-date"><i class="far fa-calendar-alt"></i></span>
+
+            <input autocomplete="off" type="text" placeholder="Add todo in {{Name}} " name="Text" id="Text"
+                   formControlName="Text" class="form-control create-todo--input input--no-margin">
+        </div>
+    </form>
+
+    <div class="bodo--date-picker">
+        <app-date-time [(ngModel)]="Date"></app-date-time>
+    </div>
+</div>

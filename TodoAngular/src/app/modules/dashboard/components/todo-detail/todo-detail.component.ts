@@ -1,4 +1,4 @@
-import {Component, OnInit}                          from '@angular/core';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 
 import {SubscriberComponent}        from '../../../../shared/abstract/subsciber-component.abstract';
@@ -6,6 +6,7 @@ import {TodoEmitables, TodoService} from './services/todo.service';
 import {ModalsService}              from '../../../../components/modals/service/modals.service';
 import {easeInOut}                  from '../../../../shared/animations/ease-in-out';
 import {SyncEventService}           from '../../../../shared/services/sync-event.service';
+import {TodoItemComponent}          from '../todo-item/todo-item.component';
 
 @Component({
     selector: 'app-todo-detail',
@@ -15,6 +16,7 @@ import {SyncEventService}           from '../../../../shared/services/sync-event
     ],
 })
 export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> implements OnInit {
+    @ViewChildren(TodoItemComponent) Todos: QueryList<TodoItemComponent>;
 
     PatchForm: FormGroup;
     ChildForm: FormGroup;
@@ -35,18 +37,7 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
 
         this.SetForm();
 
-        let that = this;
-        let KFunc = function KFunc(event: any) {
-            switch (event.keyCode) {
-                case 27:
-                    that.CloseDetail();
-
-                    that.syncEvent.RemoveEvent('keyup', KFunc);
-                    break;
-            }
-        };
-
-        this.syncEvent.AddEvent('keyup', KFunc);
+        this.syncEvent.AddEvent('keyup', (event) => this.ListenToESC(event));
     }
 
     /**
@@ -123,9 +114,50 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
      *
      * @constructor
      */
+    TodoTab(Tab: {component: TodoItemComponent, shift: boolean}) {
+        let todos = this.Todos.toArray().filter((t) => !t.Todo.Completed);
+        let index = todos.indexOf(Tab.component);
+
+        if(typeof todos[index + 1] !== 'undefined' && !Tab.shift) {
+            Tab.component.EditInput.Dom.InputInFocus = false;
+
+            Tab.component.EditInput.SyncEvent.RemoveEvent('click');
+            Tab.component.EditInput.SyncEvent.RemoveEvent('keyup');
+
+            todos[index + 1].EditInput.Switch();
+
+        }
+        if(typeof todos[index + -1] !== 'undefined' && Tab.shift) {
+            Tab.component.EditInput.Dom.InputInFocus = false;
+
+            Tab.component.EditInput.SyncEvent.RemoveEvent('click');
+            Tab.component.EditInput.SyncEvent.RemoveEvent('keyup');
+
+            todos[index + -1].EditInput.Switch();
+        }
+    }
+
+    /**
+     *
+     * @param event
+     * @constructor
+     */
+    ListenToESC(event) {
+        switch (event.keyCode) {
+            case 27:
+                this.CloseDetail();
+                break;
+        }
+    }
+
+    /**
+     *
+     * @constructor
+     */
     CloseDetail() {
         this.todo.SetTodo(null);
-
         this.modals.TriggerOverlay();
+
+        this.syncEvent.RemoveEvent('keyup');
     }
 }

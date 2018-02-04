@@ -10,7 +10,6 @@ import {AuthenticationService} from '../../authentication/services/authenticatio
 
 export interface TodosEmitables {
     Todos: any[];
-    Deleted: any[];
     Completed: any[];
 }
 
@@ -19,11 +18,10 @@ export class TodosService extends EmitableService {
 
     Emitables: TodosEmitables = {
         Todos: [],
-        Deleted: [],
         Completed: []
     };
 
-    constructor(private http: HttpClient, private lists: ListsService, private authentication: AuthenticationService) {
+    constructor(private http: HttpClient, private lists: ListsService) {
         super();
     }
 
@@ -46,7 +44,7 @@ export class TodosService extends EmitableService {
             this.Emitables = TodosService.FillTodoLists(Todos);
         }
 
-        this.Emit(this.Emitables, 'Todos', 'Deleted', 'Completed');
+        this.Emit(this.Emitables, 'Todos', 'Completed');
     }
 
     /**
@@ -87,7 +85,7 @@ export class TodosService extends EmitableService {
 
         this.deleteAndChangePosition(Todo, Id);
 
-        this.Emit(this.Emitables, 'Todos', 'Deleted', 'Completed');
+        this.Emit(this.Emitables, 'Todos', 'Completed');
     }
 
     // ------------------------------------------------- //
@@ -134,7 +132,7 @@ export class TodosService extends EmitableService {
             });
 
             return r
-        }, {Deleted: [], Todos: [], Completed: []});
+        }, {Todos: [], Completed: []});
 
         this.Emit(this.Emitables, 'Todos', 'Completed');
     }
@@ -164,22 +162,15 @@ export class TodosService extends EmitableService {
      *
      */
     private deleteAndChangePosition(Todo: any, Id: string) {
-        if(Todo === null) {
-            this.Emitables.Deleted = this.Emitables.Deleted.filter(t => t.Id != Id);
-        }
-
         if(Todo !== null) {
 
             if(Todo.Completed) {
                 this.Emitables.Completed = this.Emitables.Completed.filter(t => t.Id != Todo.Id);
-                this.Emitables.Deleted.unshift(Todo);
 
                 return;
             }
 
             this.Emitables.Todos = this.Emitables.Todos.filter(t => t.Id != Todo.Id);
-            this.Emitables.Deleted.unshift(Todo);
-
             this.UpdateListCount(Todo.ListId, '-');
         }
     }
@@ -199,18 +190,14 @@ export class TodosService extends EmitableService {
                 r.Todos.push(t);
             }
 
-            if (t.DeletedAt != null) {
-                r.Deleted.push(t);
-            }
-
             if(t.Completed && t.DeletedAt == null) {
                 r.Completed.push(t);
             }
 
             return r;
-        }, {Deleted: [], Todos: [], Completed: []});
+        }, {Todos: [], Completed: []});
 
-        TodosService.SortTodoLists(TodosObject, ['CreatedAt', 'CreatedAt', 'DeletedAt'], 'Todos', 'Completed', 'Deleted');
+        TodosService.SortTodoLists(TodosObject, ['CreatedAt', 'CreatedAt'], 'Todos', 'Completed');
 
         return TodosObject;
     }

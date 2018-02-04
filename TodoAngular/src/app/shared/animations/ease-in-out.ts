@@ -5,21 +5,25 @@ export const easeInOut = trigger('easeInOut', [
         style({
             height: 0,
             width: '100%',
+            display: 'block',
             overflow: 'hidden'
         }),
-        animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
+        animate('200ms ease-in', style({
             overflow: 'hidden',
+            display: 'block',
             height: 50
         }))
     ]),
     transition(':leave', [
         style({
             overflow: 'hidden',
+            display: 'block',
             height: 50,
             width: '100%'
         }),
-        animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', style({
+        animate('200ms ease-out', style({
             overflow: 'hidden',
+            display: 'block',
             height: 0
         }))
     ])
