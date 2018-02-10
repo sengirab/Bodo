@@ -23,7 +23,7 @@ export class TodoService extends EmitableService {
         Completed: []
     };
 
-    constructor(private http: HttpClient, private todos: TodosService, private authentication: AuthenticationService) {
+    constructor(private http: HttpClient, private todos: TodosService) {
         super();
     }
 
@@ -84,25 +84,20 @@ export class TodoService extends EmitableService {
 
     /**
      *
-     * @param {string} Id
      * @returns {Promise<void>}
      * @constructor
+     * @param Todo
      */
-    async DeleteTodo(Id: string) {
-        await this.http.delete(`${API_CLIENT}todos/${Id}`).toPromise();
+    async DeleteTodo(Todo: any) {
+        await this.http.delete(`${API_CLIENT}todos/${Todo.Id}`).toPromise();
 
-        let Todo: any = null;
-        this.Emitables.Todos = this.Emitables.Todos.filter(t => {
-            if(t.Id == Id) {
-                Todo = t;
-                return false
-            }
+        if(!Todo.Completed) {
+            this.deleteAndChangePosition(Todo, Todo.Id);
+        } else {
+            this.deleteAndChangePosition(null, Todo.Id);
+        }
 
-            return true
-        });
-
-        this.deleteAndChangePosition(Todo, Id);
-        this.Emit(this.Emitables, 'Todos', 'Completed');
+        this.Emit(this.Emitables, 'Todo', 'Todos', 'Completed');
     }
 
     /**
@@ -114,6 +109,7 @@ export class TodoService extends EmitableService {
         const CreatedTodo = (<any>await this.http.post(`${API_CLIENT}todos`, Todo.value).toPromise());
 
         this.Emitables.Todos.unshift(CreatedTodo);
+
         // Add new t in our current t list.
         if(this.Emitables.Todo.Todos !== null) {
             this.Emitables.Todo.Todos.unshift(CreatedTodo);
@@ -137,7 +133,7 @@ export class TodoService extends EmitableService {
 
         this.completeAndChangePosition(Todo);
 
-        this.Emit(this.Emitables, 'Todos', 'Completed');
+        this.Emit(this.Emitables, 'Todo', 'Todos', 'Completed');
     }
 
     // ------------------------------------------------- //
@@ -150,6 +146,7 @@ export class TodoService extends EmitableService {
     private completeAndChangePosition(Todo: any) {
         if(Todo.Completed) {
             this.Emitables.Todos = this.Emitables.Todos.filter(t => t.Id != Todo.Id);
+
             this.Emitables.Completed.push(Todo);
         }
 
@@ -157,9 +154,10 @@ export class TodoService extends EmitableService {
             this.Emitables.Completed = this.Emitables.Completed.filter(t => t.Id != Todo.Id);
 
             this.Emitables.Todos.push(Todo);
-
-            TodosService.SortTodoLists(this.Emitables, ['CreatedAt', 'CreatedAt'], 'Todos', 'Completed');
         }
+
+        TodosService.SortTodoLists(this.Emitables, ['CreatedAt', 'CompletedAt'], 'Todos', 'Completed');
+        this.Emitables.Todo.Todos = [...this.Emitables.Todos, ...this.Emitables.Completed];
     }
 
     /**
@@ -174,5 +172,7 @@ export class TodoService extends EmitableService {
         if(!Todo.Completed) {
             this.Emitables.Todos = this.Emitables.Todos.filter(t => t.Id != Todo.Id);
         }
+
+        this.Emitables.Todo.Todos = [...this.Emitables.Todos, ...this.Emitables.Completed];
     }
 }

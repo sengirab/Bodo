@@ -102,12 +102,12 @@ export class TodoDetailComponent extends SubscriberComponent<TodoEmitables> impl
 
     /**
      *
-     * @param {string} Id
      * @returns {Promise<void>}
      * @constructor
+     * @param Todo
      */
-    async Delete(Id: string) {
-        await this.todo.DeleteTodo(Id);
+    async Delete(Todo: any) {
+        await this.todo.DeleteTodo(Todo);
     }
 
     /**

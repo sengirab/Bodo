@@ -76,14 +76,13 @@ export class TodosService extends EmitableService {
 
     /**
      *
-     * @param {string} Id
      * @returns {Promise<void>}
      * @constructor
+     * @param Todo
      */
-    async DeleteTodo(Id: string) {
-        const Todo = (<any>await this.http.delete(`${API_CLIENT}todos/${Id}`).toPromise());
-
-        this.deleteAndChangePosition(Todo, Id);
+    async DeleteTodo(Todo: any) {
+        await this.http.delete(`${API_CLIENT}todos/${Todo.Id}`).toPromise();
+        this.deleteAndChangePosition(Todo);
 
         this.Emit(this.Emitables, 'Todos', 'Completed');
     }
@@ -150,18 +149,18 @@ export class TodosService extends EmitableService {
 
         if(!Todo.Completed) {
             this.Emitables.Completed = this.Emitables.Completed.filter(t => t.Id != Todo.Id);
-
             this.Emitables.Todos.push(Todo);
 
-            TodosService.SortTodoLists(this.Emitables, ['CreatedAt', 'CompletedAt'], 'Todos', 'Completed');
             this.UpdateListCount(Todo.ListId, '+');
         }
+
+        TodosService.SortTodoLists(this.Emitables, ['CreatedAt', 'CompletedAt'], 'Todos', 'Completed');
     }
 
     /**
      *
      */
-    private deleteAndChangePosition(Todo: any, Id: string) {
+    private deleteAndChangePosition(Todo: any) {
         if(Todo !== null) {
 
             if(Todo.Completed) {
@@ -197,7 +196,7 @@ export class TodosService extends EmitableService {
             return r;
         }, {Todos: [], Completed: []});
 
-        TodosService.SortTodoLists(TodosObject, ['CreatedAt', 'CreatedAt'], 'Todos', 'Completed');
+        TodosService.SortTodoLists(TodosObject, ['CreatedAt', 'CompletedAt'], 'Todos', 'Completed');
 
         return TodosObject;
     }

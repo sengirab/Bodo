@@ -4,9 +4,9 @@ import {Router}                              from '@angular/router';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {TodoEmitables, TodoService}          from './components/todo-detail/services/todo.service';
 import {SubscriberComponent}                 from '../../shared/abstract/subsciber-component.abstract';
-import {NotificationService}                 from '../../components/notifications/service/notification.service';
-import {StatusOptions}                       from '../../utils/status';
-import {PlatformNotification}                from '../../components/notifications/notification';
+import {Subject}                             from 'rxjs/Subject';
+import {WebSocketService}                    from '../../shared/services/websocket.service';
+import {SOCKET_CLIENT}                       from '../../utils/api';
 
 @Component({
     selector: 'app-dashboard',
@@ -17,12 +17,12 @@ import {PlatformNotification}                from '../../components/notification
                 style({
                     position: 'fixed',
                     overflow: 'hidden',
-                    width: '25%',
+                    width: '400px',
                     transform: 'translateX(100%)',
                 }),
                 animate('600ms cubic-bezier(0.19, 1, 0.22, 1)', style({
                     position: 'fixed',
-                    width: '25%',
+                    width: '400px',
                     overflow: 'hidden',
                     transform: 'translateX(0)'
                 }))
@@ -30,14 +30,14 @@ import {PlatformNotification}                from '../../components/notification
             transition(':leave', [
                 style({
                     position: 'fixed',
-                    width: '25%',
+                    width: '400px',
                     overflow: 'hidden',
                     transform: 'translateX(0)',
                 }),
                 animate('600ms cubic-bezier(0.19, 1, 0.22, 1)', style({
                     position: 'fixed',
                     overflow: 'hidden',
-                    width: '25%',
+                    width: '400px',
                     transform: 'translateX(100%)'
                 }))
             ])
@@ -49,9 +49,12 @@ export class DashboardComponent extends SubscriberComponent<TodoEmitables> imple
     List: { Id: string, Name: string } = null;
     User: any = {};
 
+    private ws: Subject<any>;
+
     constructor(private authentication: AuthenticationService,
                 private router: Router,
-                private todo: TodoService) {
+                private todo: TodoService,
+                private websocket: WebSocketService) {
 
         // We need to subscribe (only on this service here) so we can show the details
         // only when one is selected.
@@ -60,6 +63,35 @@ export class DashboardComponent extends SubscriberComponent<TodoEmitables> imple
 
     ngOnInit() {
         this.User = this.authentication.User;
+
+        this.InitSocket();
+    }
+
+    /**
+     *
+     * @constructor
+     */
+    InitSocket() {
+        this.ws = <Subject<any>>this.websocket.Connect(`${SOCKET_CLIENT}ws`);
+
+        /**
+         *
+         */
+        this.ws.subscribe((response: any) => {
+            const data = JSON.parse(response.data);
+
+            /**
+             * WebSocket service knows which action needs to be -
+             * fired. Send data to that service. Keeps this component clean ;)
+             */
+            this.websocket.DetermineAction(data, this.ws);
+        }, () => {
+            setTimeout(() => {
+                this.InitSocket();
+            }, 1000);
+        }, () => {
+            this.InitSocket();
+        });
     }
 
     /**

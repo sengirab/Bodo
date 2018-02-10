@@ -2,9 +2,10 @@ package domain
 
 import (
 	"time"
-	"github.com/satori/go.uuid"
-	"github.com/go-pg/pg/orm"
+
 	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/orm"
+	"github.com/satori/go.uuid"
 )
 
 type TodoCountResult []struct {
@@ -33,7 +34,7 @@ type Todo struct {
 	Completed      bool
 	CompletedAt    pg.NullTime
 	CompleteAt     pg.NullTime
-	ScheduledFor   []uuid.UUID `pg:",array"json:"-"`
+	ScheduledFor   []uuid.UUID `pg:",array" json:"-"`
 	ScheduledUsers []User      `sql:"-"`
 
 	Todos    []Todo        `pg:",fk:Parent"`

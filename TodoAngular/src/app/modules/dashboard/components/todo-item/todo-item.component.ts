@@ -45,7 +45,7 @@ export class TodoItemComponent implements OnInit {
      * @constructor
      */
     Delete() {
-        this.DeleteEmitter.emit(this.Todo.Id);
+        this.DeleteEmitter.emit(this.Todo);
     }
 
     /**

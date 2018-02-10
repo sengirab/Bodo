@@ -6,12 +6,12 @@ import (
 	"todos/TodoGo/server/handlers/lists"
 	"todos/TodoGo/server/handlers/todos"
 	"todos/TodoGo/server/handlers/authentication"
+	"todos/TodoGo/server/handlers/socket"
 )
 
 func Run() {
 	router := gin.Default()
 	router.Use(middlewares.Cors)
-
 
 	auth := router.Group("/authentication")
 	{
@@ -37,7 +37,6 @@ func Run() {
 
 		client.DELETE("/lists/:Id", lists.Delete)
 
-
 		// Todos
 		client.GET("/todos/:Id", todos.Get)
 		client.DELETE("/todos/:Id", todos.DecideDeleteAction)
@@ -46,6 +45,9 @@ func Run() {
 		client.POST("/todos", todos.Add)
 		client.PATCH("/todos", todos.Patch)
 	}
+
+	go socket.Hub.Run()
+	router.GET("/ws", socket.HandleSocket)
 
 	router.Run(":8080")
 }

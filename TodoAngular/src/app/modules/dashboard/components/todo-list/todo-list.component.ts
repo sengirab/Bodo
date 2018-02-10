@@ -73,12 +73,12 @@ export class TodoListComponent extends SubscriberComponent<TodosEmitables> imple
 
     /**
      *
-     * @param {string} Id
      * @returns {Promise<void>}
      * @constructor
+     * @param Todo
      */
-    async Delete(Id: string) {
-        await this.todos.DeleteTodo(Id);
+    async Delete(Todo: any) {
+        await this.todos.DeleteTodo(Todo);
     }
 
     /**

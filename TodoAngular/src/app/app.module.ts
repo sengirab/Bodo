@@ -22,6 +22,7 @@ import {NotificationComponent}  from './components/notifications/components/noti
 import {AuthInterceptor}        from './interceptors/auth.interceptor';
 import {ErrorInterceptor}       from './interceptors/error.interceptor';
 import {SyncEventService}       from './shared/services/sync-event.service';
+import {WebSocketService}       from './shared/services/websocket.service';
 
 @NgModule({
     declarations: [
@@ -52,6 +53,7 @@ import {SyncEventService}       from './shared/services/sync-event.service';
         ModalsService,
         NotificationService,
         SyncEventService,
+        WebSocketService,
 
         // Interceptors
         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
